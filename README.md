@@ -10,10 +10,8 @@ Von fischertechnik bereitgestellte Bibliotheken und Header Dateien zur Entwicklu
 
 ### factory
 Beispielprogramme für die Modellfabrik mit Highlevel und Lowlevel API.
-
 Author => [Joel Schmid](https://github.com/SchmidJoel/FischertechnikTXTApi)
 
 ### FactoryLib
 Implementierung der Highlevel und Lowlevel API für den TXT-Controller.
-
 Author => [Joel Schmid](https://github.com/SchmidJoel/FischertechnikTXTApi)
