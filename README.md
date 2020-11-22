@@ -1,4 +1,4 @@
-# FischertechnikMQTTWebApplication
+# Fischertechnik - MQTT - Web Application
 
 Dieses Projekt entstand während einer Studienarbeit der [DHBW Stuttgart Campus Horb](https://www.dhbw-stuttgart.de/horb/home/) im Studiengang Informatik.
 Bearbeiter: Moris Kotsch
