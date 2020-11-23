@@ -36,31 +36,31 @@ LIBS = -l"SDLWidgetsLib" \
 $(shell mkdir -p "bin")
 $(shell mkdir -p "obj")
 
-all: SortingLineMain ProcessingStationMain MainUnit
+all: ControlSortingLineMain ControlProcessingStationMain ControlMainUnit
 
-VacuumRobot.o : src/VacuumRobot.cpp
+ControlVacuumRobot.o : src/ControlVacuumRobot.cpp
 	$(CXX) $(CXXFLAGS) $^ -o obj/$@
 
-WarehouseStorage.o : src/WarehouseStorage.cpp
+ControlWarehouseStorage.o : src/ControlWarehouseStorage.cpp
 	$(CXX) $(CXXFLAGS) $^ -o obj/$@
 
-HighBayWarehouse.o : src/HighBayWarehouse.cpp
+ControlHighBayWarehouse.o : src/ControlHighBayWarehouse.cpp
 	$(CXX) $(CXXFLAGS) $^ -o obj/$@
 
-MainUnit.o: src/MainUnit.cpp
+ControlMainUnit.o: src/ControlMainUnit.cpp
 	$(CXX) $(CXXFLAGS) $^ -o obj/$@
 
-ProcessingStationMain.o: src/ProcessingStationMain.cpp 
+ControlProcessingStationMain.o: src/ControlProcessingStationMain.cpp 
 	$(CXX) $(CXXFLAGS) $^ -o obj/$@
 
-SortingLineMain.o: src/SortingLineMain.cpp
+ControlSortingLineMain.o: src/ControlSortingLineMain.cpp
 	$(CXX) $(CXXFLAGS) $^ -o obj/$@
 
-MainUnit: MainUnit.o HighBayWarehouse.o VacuumRobot.o WarehouseStorage.o
-	$(CXX) $(LFLAGS) $(LIBPATH) obj/MainUnit.o obj/HighBayWarehouse.o obj/VacuumRobot.o obj/WarehouseStorage.o $(LIBS) -o bin/$@
+ControlMainUnit: ControlMainUnit.o ControlHighBayWarehouse.o ControlVacuumRobot.o ControlWarehouseStorage.o
+	$(CXX) $(LFLAGS) $(LIBPATH) obj/ControlMainUnit.o obj/ControlHighBayWarehouse.o obj/ControlVacuumRobot.o obj/ControlWarehouseStorage.o $(LIBS) -o bin/$@
 
-ProcessingStationMain: ProcessingStationMain.o
+ControlProcessingStationMain: ControlProcessingStationMain.o
 	$(CXX) $(LFLAGS) $(LIBPATH) obj/$^ $(LIBS) -o bin/$@
 
-SortingLineMain: SortingLineMain.o
+ControlSortingLineMain: ControlSortingLineMain.o
 	$(CXX) $(LFLAGS) $(LIBPATH) obj/$^ $(LIBS) -o bin/$@
