@@ -27,6 +27,14 @@
 				<button name="buttonBlue">Blau</button>
 			</p>
 		</form>
+		<h4>
+			Steuerung der Kette!
+		</h4>
+		<form method="post">
+			<p>
+				<button name="buttonBelt">Förderkette</button>
+			</p>
+		</form>
 	</body>
 </html>
 
@@ -34,25 +42,31 @@
 	if (isset($_POST['buttonCompressor']))
 	{
 		$text = "AirCompressor";
-		$cmd = 'sudo python /var/www/html/CompressorOnOff/Compressor.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
 		shell_exec($cmd);
 	}
 	if (isset($_POST['buttonWhite']))
 	{
 		$text = "White";
-		$cmd = 'sudo python /var/www/html/CompressorOnOff/Compressor.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
 		shell_exec($cmd);
 	}
 	if (isset($_POST['buttonRed']))
 	{
 		$text = "Red";
-		$cmd = 'sudo python /var/www/html/CompressorOnOff/Compressor.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
 		shell_exec($cmd);
 	}
 	if (isset($_POST['buttonBlue']))
 	{
 		$text = "Blue";
-		$cmd = 'sudo python /var/www/html/CompressorOnOff/Compressor.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
+		shell_exec($cmd);
+	}
+	if (isset($_POST['buttonBelt']))
+	{
+		$text = "Belt";
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
 		shell_exec($cmd);
 	}
 ?>
