@@ -3,5 +3,6 @@
         "xaxis",
         "yaxis",
         "zaxis"
-    ]
+    ],
+    "python.pythonPath": "C:\\Users\\moris\\AppData\\Local\\Programs\\Python\\Python39\\python.exe"
 }

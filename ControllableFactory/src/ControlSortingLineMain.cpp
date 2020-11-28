@@ -4,14 +4,6 @@
 #include "debug.h"
 #include "config.h"
 
-#define DEBUG_SORTINGLINE false
-
-enum SortingLineState
-{
-    WAITING,
-    WORKING
-};
-
 TXT txt;
 TxtMqttFactoryClient* mqttClient;
 
@@ -29,15 +21,43 @@ Output blue = txt.output(7);
 NTC motorTemperture = txt.ntc(4);
 Voltage motorVoltage = txt.voltage(5);
 
-SortingLineState colorDetectionUnit = SortingLineState::WAITING;
-SortingLineState sortingUnit = SortingLineState::WAITING;
-
 void SortWorkpiece(Color color);
 void ColorDetection();
-bool end = false;
+bool compStat = false;
+bool whiteStat = false;
+bool redStat = false;
+bool blueStat = false;
+bool beltStat = false;
 void topicCommand(const std::string &message)
 {
-	end = true;
+    if (message.compare("AirCompressor") == 0)
+    {
+        compStat = !compStat;
+    }else
+    {
+        if (message.compare("White") == 0)
+        {
+            whiteStat = !whiteStat;
+        }else
+        {
+            if (message.compare("Red") == 0)
+            {
+                redStat = !redStat;
+            }else
+            {
+                if (message.compare("Blue") == 0)
+                {
+                    blueStat = !blueStat;
+                }else
+                {
+                    if (message.compare("Belt") == 0)
+                    {
+                        beltStat = !beltStat;
+                    }
+                }
+            }
+        }
+    }
 }
 
 int main(void)
@@ -45,4 +65,13 @@ int main(void)
     mqttClient = new TxtMqttFactoryClient("SortingLine", "192.168.178.100", "", "");
     mqttClient->connect(1000);
     mqttClient->subTopicAsync("/factory/sortingLine", topicCommand);
+
+    while (true)
+    {
+        compStat ? comp.on() : comp.off();
+        whiteStat ? white.on() : white.off();
+        redStat ? red.on() : red.off();
+        blueStat ? blue.on() : blue.off();
+        beltStat ? belt.right(1000) : belt.stop();
+    }
 }
