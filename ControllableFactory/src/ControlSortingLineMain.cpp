@@ -7,22 +7,20 @@
 TXT txt;
 TxtMqttFactoryClient* mqttClient;
 
-DigitalInput light_sensor_start = txt.digitalInput(1);
-DigitalInput light_sensor_end = txt.digitalInput(3);
+//DigitalInput light_sensor_start = txt.digitalInput(1);
+//DigitalInput light_sensor_end = txt.digitalInput(3);
 Motor belt = txt.motor(1);
-Counter counter = txt.counter(1);
-ColorSensor color_sensor = txt.colorSensor(2);
+//Counter counter = txt.counter(1);
+//ColorSensor color_sensor = txt.colorSensor(2);
 Output comp = txt.output(8);
 Output white = txt.output(5);
 Output red = txt.output(6);
 Output blue = txt.output(7);
 
 // Monitor
-NTC motorTemperture = txt.ntc(4);
-Voltage motorVoltage = txt.voltage(5);
+//NTC motorTemperture = txt.ntc(4);
+//Voltage motorVoltage = txt.voltage(5);
 
-void SortWorkpiece(Color color);
-void ColorDetection();
 bool compStat = false;
 bool whiteStat = false;
 bool redStat = false;
@@ -74,4 +72,6 @@ int main(void)
         blueStat ? blue.on() : blue.off();
         beltStat ? belt.right(1000) : belt.stop();
     }
+    delete mqttClient;
+    return 0;
 }
