@@ -30,6 +30,7 @@
 *.exe
 *.out
 *.app
+*.bst
 
 #custom
 *compiled
