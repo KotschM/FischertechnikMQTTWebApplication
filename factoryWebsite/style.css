@@ -54,57 +54,56 @@ header nav ul li:hover {
     padding-top: 5px;
 }
 
-/* HOME ************/
+/* OVERVIEW ************/
 
-#home {
-    /***** background: url(img/MORIS.jpg); *****/
+#overview {
     background: url(img/Ozean.jpg);
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
 }
-#home h1 {
+#overview h1 {
     margin: 200px auto 0 auto;
     font-size: 110px;
     /* Eigenes */
     /*color: #fff */;
     color: rgb(89, 105, 118);
 }
-#home h2 {
+#overview h2 {
     margin: 0 auto 0 auto;
     font-size: 25px;
     /* Eigenes */
     color: #fff;
 }
-#home img {
+#overview img {
     width: 32px;
     margin-top: 150px;
     opacity: 0.7;
 }
-#home img:hover {
+#overview img:hover {
     opacity: 1;
 }
 
 /* ABOUT ************/
 
-#about img {
+#street img {
     width: 240px;
 }
-#about img:hover{
+#street img:hover{
     transform: scale(1.1);
     -ms-transform: scale(1.1);
 }
-#about h4 {
+#street h4 {
     font-size: 25px;
 }
-#about p {
+#street p {
     width: 700px;
     margin: 0 auto 0 auto;
 }
 
 /* WORK ************/
 
-#work {
+#production {
     background-color: #f0f0f0;
 }
 #projects {
