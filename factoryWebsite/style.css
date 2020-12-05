@@ -7,7 +7,7 @@ h1, h2, h3, a { font-family: 'Roboto', sans-serif; font-weight: 500; color: #494
 
 h2 { color: #5d7177; }
 
-h3 { font-size: 40px; padding-top: 8%; margin-bottom: 5px; }
+h3 { font-size: 60px; padding-top: 8%; margin-bottom: 5px; }
 
 h4, p { font-family: 'Roboto Slab', serif; color: #494949; }
 
@@ -90,38 +90,19 @@ iframe{
 
 /* STREET ************/
 
-
 #street {
-    background: url(img/sortierung.jpg);
+    background: rgb(11, 128, 7);
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
 }
 
-
-#street button {
-    width: 100px;
-}
-
-#street button {
-    transform: scale(1.1);
-    -ms-transform: scale(1.1);
-}
-
-
-
-
-
-
-#street img {
-    width: 240px;
-}
-#street img:hover{
-    transform: scale(1.1);
-    -ms-transform: scale(1.1);
-}
 #street h4 {
     font-size: 25px;
+    color: #030303;
+}
+#street h3 {
+    color: #030303;
 }
 #street p {
     width: 700px;
@@ -131,29 +112,32 @@ iframe{
 /* PRODUCTION ************/
 
 #production {
+    background: rgb(92, 167, 89);
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+#production h3 {
+    color: white;
+}
+
+#production h4 {
+    font-size: 25px;
+    color: #030303;
+}
+
+
+
+
+
+
+#production {
     background-color: #f0f0f0;
 }
 #projects {
     width: 900px;
     margin: 0 auto 0 auto ;
-}
-#projects ul {
-    padding: 0;
-}
-#projects ul li {
-    width: 33.3%;
-    float: left;
-    margin-bottom: 15px;
-}
-#projects img {
-    width: 280px;
-    height: 170px;
-    border-radius: 5px;
-}
-#projects img:hover {
-    transform: scale(1.1);
-    -ms-transform: scale(1.1);
-    box-shadow: 0 5px 5px rgba(0,0,0,0.3);
 }
 
 /* WORK ************/

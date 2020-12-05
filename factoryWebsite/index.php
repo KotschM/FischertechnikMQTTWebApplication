@@ -48,7 +48,7 @@
             </h4>
             <form method="post" target="frame">
                 <p>
-                    <button name="buttonCompressor">Druckluft</button>
+                    <button name="buttonCompressorSortingLine">Druckluft</button>
                 </p>
             </form>
             <h4>
@@ -56,9 +56,9 @@
             </h4>
             <form method="post" target="frame">
                 <p>
-                    <button name="buttonWhite">Weiß</button>
-                    <button name="buttonRed">Rot</button>
-                    <button name="buttonBlue">Blau</button>
+                    <button name="buttonWhiteSortingLine">Weiß</button>
+                    <button name="buttonRedSortingLine">Rot</button>
+                    <button name="buttonBlueSortingLine">Blau</button>
                 </p>
             </form>
             <h4>
@@ -66,7 +66,7 @@
             </h4>
             <form method="post" target="frame">
                 <p>
-                    <button name="buttonBelt">Förderkette</button>
+                    <button name="buttonBeltSortingLine">Förderkette</button>
                 </p>
             </form>
         </section>
@@ -76,17 +76,40 @@
         <section id="production">
             <h3>Fertigungsstraße</h3>
             <hr>
-            <div id="projects">
-                <ul>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_01"></a></li>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_02"></a></li>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_03"></a></li>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_04"></a></li>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_05"></a></li>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_06"></a></li>
-                    <li><a href="#"><img src="http://placehold.it/280x170" alt="Projekt_07"></a></li>
-                </ul>
-            </div>
+            <h4>
+			Steuerung der Druckluft!
+            </h4>
+            <form method="post">
+                <p>
+                    <button id="b2" onclick="myFunction()" name="buttonCompressor">Druckluft</button>
+                    <button id="b1"  name="buttonCompressor">Druckluft</button>
+                </p>
+            </form>
+            <h4>
+                Steuerung des Ofens!
+            </h4>
+            <form method="post">
+                <p>
+                    <button name="buttonOvenLight">Licht des Ofens</button>
+                    <button name="buttonOvenGate">Tür des Ofens</button>
+                </p>
+            </form>
+            <h4>
+                Steuerung der Kette!
+            </h4>
+            <form method="post">
+                <p>
+                    <button name="buttonBelt">Förderkette</button>
+                </p>
+            </form>
+            <h4>
+                Steuerung der Säge!
+            </h4>
+            <form method="post">
+                <p>
+                    <button name="buttonSaw">Säge</button>
+                </p>
+            </form>
         </section>
 
         <!-- WAREHOUSE -->
@@ -115,34 +138,39 @@
 </html>
 
 <?php
-	if (isset($_POST['buttonCompressor']))
+	if (isset($_POST['buttonCompressorSortingLine']))
 	{
+        $topic = "/factory/sortingLine";
 		$text = "AirCompressor";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
-	if (isset($_POST['buttonWhite']))
+	if (isset($_POST['buttonWhiteSortingLine']))
 	{
+        $topic = "/factory/sortingLine";
 		$text = "White";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
-	if (isset($_POST['buttonRed']))
+	if (isset($_POST['buttonRedSortingLine']))
 	{
+        $topic = "/factory/sortingLine";
 		$text = "Red";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
-	if (isset($_POST['buttonBlue']))
+	if (isset($_POST['buttonBlueSortingLine']))
 	{
+        $topic = "/factory/sortingLine";
 		$text = "Blue";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
-	if (isset($_POST['buttonBelt']))
+	if (isset($_POST['buttonBeltSortingLine']))
 	{
+        $topic = "/factory/sortingLine";
 		$text = "Belt";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SortingLine.py "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
 ?>
