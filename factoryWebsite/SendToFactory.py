@@ -12,4 +12,3 @@ client = mqtt.Client()
 client.on_publish = on_publish
 client.connect(BROKER_ADDRESS)
 ret = client.publish(sys.argv[1], sys.argv[2])
-#ret = client.publish("/factory/sortingLine", sys.argv[2])
