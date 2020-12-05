@@ -84,7 +84,30 @@ header nav ul li:hover {
     opacity: 1;
 }
 
-/* ABOUT ************/
+/* STREET ************/
+
+
+#street {
+    background: url(img/sortierung.jpg);
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+
+#street button {
+    width: 100px;
+}
+
+#street button {
+    transform: scale(1.1);
+    -ms-transform: scale(1.1);
+}
+
+
+
+
+
 
 #street img {
     width: 240px;
@@ -101,7 +124,7 @@ header nav ul li:hover {
     margin: 0 auto 0 auto;
 }
 
-/* WORK ************/
+/* PRODUCTION ************/
 
 #production {
     background-color: #f0f0f0;
