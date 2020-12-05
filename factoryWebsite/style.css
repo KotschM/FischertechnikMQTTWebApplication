@@ -54,6 +54,10 @@ header nav ul li:hover {
     padding-top: 5px;
 }
 
+iframe{
+    display: none;
+  }
+
 /* OVERVIEW ************/
 
 #overview {

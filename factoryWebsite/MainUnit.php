@@ -8,7 +8,7 @@
 		<h2>
 			Zurück zur Übersicht!
 		</h2>
-		<input type="button" onclick="location.href='index.php';" value="Übersicht" />
+		<input type="button" onclick="location.href='indexold.php';" value="Übersicht" />
 		<h4>
 			Bitte wählen Sie einen Bereich der Anlage aus!
 		</h4>
