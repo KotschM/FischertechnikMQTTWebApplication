@@ -79,35 +79,37 @@
             <h4>
 			Steuerung der Druckluft!
             </h4>
-            <form method="post">
+            <form method="post" target="frame">
                 <p>
-                    <button id="b2" onclick="myFunction()" name="buttonCompressor">Druckluft</button>
-                    <button id="b1"  name="buttonCompressor">Druckluft</button>
+                    <!--
+                        <button id="b2" onclick="myFunction()" name="buttonCompressor">Druckluft</button>
+                    -->
+                        <button id="b1" name="buttonCompressorProcessingStation">Druckluft</button>
                 </p>
             </form>
             <h4>
                 Steuerung des Ofens!
             </h4>
-            <form method="post">
+            <form method="post" target="frame">
                 <p>
-                    <button name="buttonOvenLight">Licht des Ofens</button>
-                    <button name="buttonOvenGate">Tür des Ofens</button>
+                    <button name="buttonOvenLightProcessingStation">Licht des Ofens</button>
+                    <button name="buttonOvenGateProcessingStation">Tür des Ofens</button>
                 </p>
             </form>
             <h4>
                 Steuerung der Kette!
             </h4>
-            <form method="post">
+            <form method="post" target="frame">
                 <p>
-                    <button name="buttonBelt">Förderkette</button>
+                    <button name="buttonBeltProcessingStation">Förderkette</button>
                 </p>
             </form>
             <h4>
                 Steuerung der Säge!
             </h4>
-            <form method="post">
+            <form method="post" target="frame">
                 <p>
-                    <button name="buttonSaw">Säge</button>
+                    <button name="buttonSawProcessingStation">Säge</button>
                 </p>
             </form>
         </section>
@@ -137,7 +139,8 @@
     </body>
 </html>
 
-<?php
+<?php   
+    // Sorting Line
 	if (isset($_POST['buttonCompressorSortingLine']))
 	{
         $topic = "/factory/sortingLine";
@@ -170,6 +173,45 @@
 	{
         $topic = "/factory/sortingLine";
 		$text = "Belt";
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		shell_exec($cmd);
+    }
+
+    //Processing Station
+    if (isset($_POST['buttonSawProcessingStation']))
+	{
+        $topic = "/factory/processingStation";
+		$text = "Saw";
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		shell_exec($cmd);
+	}
+	if (isset($_POST['buttonCompressorProcessingStation']))
+	{
+        $topic = "/factory/processingStation";
+		$text = "AirCompressor";
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		shell_exec($cmd);
+		
+		myFunction();
+	}
+	if (isset($_POST['buttonBeltProcessingStation']))
+	{
+        $topic = "/factory/processingStation";
+		$text = "Belt";
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		shell_exec($cmd);
+	}
+	if (isset($_POST['buttonOvenLightProcessingStation']))
+	{
+        $topic = "/factory/processingStation";
+		$text = "OvenLight";
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		shell_exec($cmd);
+	}
+	if (isset($_POST['buttonOvenGateProcessingStation']))
+	{
+        $topic = "/factory/processingStation";
+		$text = "OvenGate";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
