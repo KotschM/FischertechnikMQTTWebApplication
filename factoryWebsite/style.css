@@ -91,12 +91,11 @@ iframe{
 /* STREET ************/
 
 #street {
-    background: rgb(11, 128, 7);
+    background: rgb(89, 105, 118);
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
 }
-
 #street h4 {
     font-size: 25px;
     color: #030303;
@@ -112,32 +111,17 @@ iframe{
 /* PRODUCTION ************/
 
 #production {
-    background: rgb(92, 167, 89);
+    background: rgb(89, 105, 118);
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
 }
-
 #production h3 {
-    color: white;
+    color: #030303;
 }
-
 #production h4 {
     font-size: 25px;
     color: #030303;
-}
-
-
-
-
-
-
-#production {
-    background-color: #f0f0f0;
-}
-#projects {
-    width: 900px;
-    margin: 0 auto 0 auto ;
 }
 
 /* WORK ************/

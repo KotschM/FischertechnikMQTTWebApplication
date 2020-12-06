@@ -117,15 +117,11 @@
         <!-- WAREHOUSE -->
 
         <section id="warehouse">
-            <h3>Contact</h3>
+            <h3>Hochregallager</h3>
             <hr>
-
-            <form>
-                <input class="input_text" type="email" tabindex="1" placeholder="E-Mail"><br>
-                <input class="input_text" type="text" tabindex="2" placeholder="Betreff"><br>
-                <textarea class="input_text" tabindex="3" placeholder="Nachricht"></textarea><br>
-                <input class="button" type="submit">
-            </form>
+            <h4>
+                ToDo...
+            </h4>
         </section>
     
         <!-- FOOTER -->
