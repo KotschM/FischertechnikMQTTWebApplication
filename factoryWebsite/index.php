@@ -38,7 +38,7 @@
             </a>
         </section>
 
-        <!-- STREET -->
+        <!-- SORTING STREET -->
 
         <section id="street">
             <h3>Sortierstraße</h3>
@@ -69,6 +69,35 @@
                     <button name="buttonBeltSortingLine">Förderkette</button>
                 </p>
             </form>
+
+            <form action=""> 
+                <select name="customers" onchange="showCustomer(this.value)">
+                    <option value=""> Select a topic: </option>
+                    <option value="1"> SortingLine </option>
+                    <option value="2"> Processing Station </option>
+                    <option value="3"> Warehouse Unit </option>
+                </select>
+            </form>
+            <br>
+            <div id="txtHint">Messages will be listed here...</div>
+
+            <script>
+            function showCustomer(str) {
+            var xhttp;  
+            if (str == "") {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            }
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("txtHint").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "getcustomer.php?q="+str, true);
+            xhttp.send();
+            }
+            </script>
         </section>
 
         <!-- PRODUCTION -->
@@ -137,39 +166,41 @@
 
 <?php   
     // Sorting Line
+    $topicSortingLine = "/factory/sortingLine";
 	if (isset($_POST['buttonCompressorSortingLine']))
 	{
-        $topic = "/factory/sortingLine";
 		$text = "AirCompressor";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
-		shell_exec($cmd);
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
+        shell_exec($cmd);
+        $db = new SQLite3("ftdatabase2.db");
+        $db-> exec("CREATE TABLE IF NOT EXISTS testTable(
+        id INTEGER PRIMARY KEY AUTOINCREMENT, 
+        apple TEXT NOT NULL DEFAULT '0',
+        banane TEXT NOT NULL DEFAULT '0',
+        house INTEGER NOT NULL DEFAULT '0')");
 	}
 	if (isset($_POST['buttonWhiteSortingLine']))
 	{
-        $topic = "/factory/sortingLine";
 		$text = "White";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
 	if (isset($_POST['buttonRedSortingLine']))
 	{
-        $topic = "/factory/sortingLine";
 		$text = "Red";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
 	if (isset($_POST['buttonBlueSortingLine']))
 	{
-        $topic = "/factory/sortingLine";
 		$text = "Blue";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
 		shell_exec($cmd);
 	}
 	if (isset($_POST['buttonBeltSortingLine']))
 	{
-        $topic = "/factory/sortingLine";
 		$text = "Belt";
-		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
+		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
 		shell_exec($cmd);
     }
 
