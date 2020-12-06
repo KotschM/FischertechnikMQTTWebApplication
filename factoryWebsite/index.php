@@ -166,80 +166,107 @@
 
 <?php   
     // Sorting Line
+    $mysqli = new mysqli("localhost", "raspberry", "ftpiuser", "FromWebToFactory");
+    if($mysqli->connect_error) {
+    exit('Could not connect');
+    }
+
     $topicSortingLine = "/factory/sortingLine";
 	if (isset($_POST['buttonCompressorSortingLine']))
 	{
 		$text = "AirCompressor";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
         shell_exec($cmd);
-        $db = new SQLite3("ftdatabase2.db");
-        $db-> exec("CREATE TABLE IF NOT EXISTS testTable(
-        id INTEGER PRIMARY KEY AUTOINCREMENT, 
-        apple TEXT NOT NULL DEFAULT '0',
-        banane TEXT NOT NULL DEFAULT '0',
-        house INTEGER NOT NULL DEFAULT '0')");
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicSortingLine.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonWhiteSortingLine']))
 	{
 		$text = "White";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicSortingLine.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonRedSortingLine']))
 	{
 		$text = "Red";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicSortingLine.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonBlueSortingLine']))
 	{
 		$text = "Blue";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicSortingLine.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonBeltSortingLine']))
 	{
 		$text = "Belt";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topicSortingLine.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicSortingLine.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
     }
 
     //Processing Station
+    $topicProcessingStation = "/factory/processingStation";
     if (isset($_POST['buttonSawProcessingStation']))
 	{
-        $topic = "/factory/processingStation";
 		$text = "Saw";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicProcessingStation.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonCompressorProcessingStation']))
 	{
-        $topic = "/factory/processingStation";
 		$text = "AirCompressor";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicProcessingStation.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 		
 		myFunction();
 	}
 	if (isset($_POST['buttonBeltProcessingStation']))
 	{
-        $topic = "/factory/processingStation";
 		$text = "Belt";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicProcessingStation.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonOvenLightProcessingStation']))
 	{
-        $topic = "/factory/processingStation";
 		$text = "OvenLight";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
-		shell_exec($cmd);
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicProcessingStation.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
 	}
 	if (isset($_POST['buttonOvenGateProcessingStation']))
 	{
-        $topic = "/factory/processingStation";
 		$text = "OvenGate";
 		$cmd = 'sudo python /var/www/html/factoryWebsite/SendToFactory.py "'.$topic.'" "'.$text.'"';
-		shell_exec($cmd);
-	}
+        shell_exec($cmd);
+        $sql = 'INSERT INTO MQTTMessage (topic, message) VALUES ("'.$topicProcessingStation.'", "'.$text.'")';
+        $stmt = $mysqli->prepare($sql);
+        $stmt->execute();
+    }
+    
+    $stmt->close();
 ?>
