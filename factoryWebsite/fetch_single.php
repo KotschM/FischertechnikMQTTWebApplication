@@ -2,30 +2,19 @@
 include('database connection.php');
 include('function.php');
 
-if(isset($_POST["operation"]))
+if(isset($_POST["course_id"]))
 {
-    if($_POST["operation"] == "Add")
+    $output = array();
+    $statement = $connection->prepare("SELECT * FROM MQTTMessage WHERE id = '".$_POST["course_id"]."' LIMIT 1");
+    $statement->execute();
+    $result = $statement->fetchAll();
+    foreach($result as $row)
     {
-        $statement = $connection->prepare("INSERT INTO course (course, students) VALUES (:course, :students)");
-        $result = $statement->execute(
-             array(
-                ':course'   =>  $_POST["course"],
-                ':students' =>  $_POST["students"],
-             )
-        );
+        $output["id"] = $row["id"];
+        $output["topic"] = $row["topic"];
+        $output["message"] = $row["message"];
     }
-    if($_POST["operation"] == "Edit")
-    {
-        $statement = $connection->prepare("UPDATE course SET course = :course, students = :students WHERE id = :id");
-        $result = $statement->execute(
-             array(
-                ':course'   =>  $_POST["course"],
-                ':students' =>  $_POST["students"],
-                ':id'       =>  $_POST["course_id"]
-             )
-        );
-    }
-    
+    echo json_encode($output);
 }
 ?>
                            

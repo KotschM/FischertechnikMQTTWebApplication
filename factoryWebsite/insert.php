@@ -6,21 +6,21 @@ if(isset($_POST["operation"]))
 {
     if($_POST["operation"] == "Add")
     {
-        $statement = $connection->prepare("INSERT INTO course (course, students) VALUES (:course, :students)");
+        $statement = $connection->prepare("INSERT INTO MQTTMessage (topic, message) VALUES (:topic, :message)");
         $result = $statement->execute(
              array(
-                ':course'   =>  $_POST["course"],
-                ':students' =>  $_POST["students"],
+                ':topic'   =>  $_POST["topic"],
+                ':message' =>  $_POST["message"],
              )
         );
     }
     if($_POST["operation"] == "Edit")
     {
-        $statement = $connection->prepare("UPDATE course SET course = :course, students = :students WHERE id = :id");
+        $statement = $connection->prepare("UPDATE MQTTMessage SET topic = :topic, message = :message WHERE id = :id");
         $result = $statement->execute(
              array(
-                ':course'   =>  $_POST["course"],
-                ':students' =>  $_POST["students"],
+                ':topic'   =>  $_POST["topic"],
+                ':message' =>  $_POST["message"],
                 ':id'       =>  $_POST["course_id"]
              )
         );

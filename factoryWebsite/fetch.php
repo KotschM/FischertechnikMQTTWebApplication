@@ -3,11 +3,11 @@ include('database connection.php');
 include('function.php');
 $query = '';
 $output = array();
-$query .= "SELECT * FROM course ";
+$query .= "SELECT * FROM MQTTMessage ";
 if(isset($_POST["search"]["value"]))
 {
-    $query .= 'WHERE course LIKE "%'.$_POST["search"]["value"].'%" ';
-    $query .= 'OR students LIKE "%'.$_POST["search"]["value"].'%" ';
+    $query .= 'WHERE topic LIKE "%'.$_POST["search"]["value"].'%" ';
+    $query .= 'OR message LIKE "%'.$_POST["search"]["value"].'%" ';
 }
 
 if(isset($_POST["order"]))
@@ -33,8 +33,8 @@ foreach($result as $row)
     $sub_array = array();
 
     $sub_array[] = $row["id"];
-    $sub_array[] = $row["course"];
-    $sub_array[] = $row["students"];
+    $sub_array[] = $row["topic"];
+    $sub_array[] = $row["message"];
     $sub_array[] = '<button type="button" name="update" id="'.$row["id"].'" class="btn btn-primary btn-sm update">Edit</button>';
     $sub_array[] = '<button type="button" name="delete" id="'.$row["id"].'" class="btn btn-danger btn-sm delete">Delete</button>';
     $data[] = $sub_array;

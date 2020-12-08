@@ -141,35 +141,6 @@
             <h3>MQTT-Statistik</h3>
             <hr>
 
-            <form action=""> 
-                <select name="customers" onchange="showCustomer(this.value)">
-                    <option value=""> Select a topic: </option>
-                    <option value="1"> SortingLine </option>
-                    <option value="2"> Processing Station </option>
-                    <option value="3"> Warehouse Unit </option>
-                </select>
-            </form>
-            <br>
-            <div id="txtHint">Messages will be listed here...</div>
-
-            <script>
-            function showCustomer(str) {
-            var xhttp;  
-            if (str == "") {
-                document.getElementById("txtHint").innerHTML = "";
-                return;
-            }
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("txtHint").innerHTML = this.responseText;
-                }
-            };
-            xhttp.open("GET", "getcustomer.php?q="+str, true);
-            xhttp.send();
-            }
-            </script>
-
             <br>
 
             <div class="content">
@@ -177,8 +148,8 @@
                     <thead bgcolor="#6cd8dc">
                         <tr class="table-primary">
                            <th width="30%">ID</th>
-                           <th width="50%">Course Name</th>  
-                           <th width="30%">Number of Students</th>
+                           <th width="50%">Topic</th>  
+                           <th width="30%">Message</th>
                            <th scope="col" width="5%">Edit</th>
                            <th scope="col" width="5%">Delete</th>
                         </tr>
