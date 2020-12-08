@@ -3,9 +3,9 @@
     <head>
         <Title>Fischertechnik 4.0</Title>
         <meta charset="utf-8">
-        <link rel="stylesheet" type="text/css" href="style.css">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap" rel="stylesheet">
-        <link href="https://fonts.googleapis.com/css2?family=Roboto+Slab&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="singlePage.css">
+        <link rel="stylesheet" type="text/css" href="file:///var/www/html/Bootstrap/css/bootstrap.min.css">
+        <script type="text/javascript" scr="file:///var/www/html/Bootstrap/css/bootstrap.min.css"></script>
     </head>
 
     <body>
@@ -23,6 +23,7 @@
                     <li><a href="#street">Straße</a></li>
                     <li><a href="#production">Fertigung</a></li>
                     <li><a href="#warehouse">Lager</a></li>
+                    <li><a href="#statistic">Statistik</a></li>
                 </ul>
             </nav>
         </header>
@@ -69,35 +70,6 @@
                     <button name="buttonBeltSortingLine">Förderkette</button>
                 </p>
             </form>
-
-            <form action=""> 
-                <select name="customers" onchange="showCustomer(this.value)">
-                    <option value=""> Select a topic: </option>
-                    <option value="1"> SortingLine </option>
-                    <option value="2"> Processing Station </option>
-                    <option value="3"> Warehouse Unit </option>
-                </select>
-            </form>
-            <br>
-            <div id="txtHint">Messages will be listed here...</div>
-
-            <script>
-            function showCustomer(str) {
-            var xhttp;  
-            if (str == "") {
-                document.getElementById("txtHint").innerHTML = "";
-                return;
-            }
-            xhttp = new XMLHttpRequest();
-            xhttp.onreadystatechange = function() {
-                if (this.readyState == 4 && this.status == 200) {
-                document.getElementById("txtHint").innerHTML = this.responseText;
-                }
-            };
-            xhttp.open("GET", "getcustomer.php?q="+str, true);
-            xhttp.send();
-            }
-            </script>
         </section>
 
         <!-- PRODUCTION -->
@@ -151,6 +123,61 @@
             <h4>
                 ToDo...
             </h4>
+        </section>
+
+        <!-- Statistik -->
+
+        <section id="statistic">
+            <h3>MQTT-Statistik</h3>
+            <hr>
+
+            <form action=""> 
+                <select name="customers" onchange="showCustomer(this.value)">
+                    <option value=""> Select a topic: </option>
+                    <option value="1"> SortingLine </option>
+                    <option value="2"> Processing Station </option>
+                    <option value="3"> Warehouse Unit </option>
+                </select>
+            </form>
+            <br>
+            <div id="txtHint">Messages will be listed here...</div>
+
+            <script>
+            function showCustomer(str) {
+            var xhttp;  
+            if (str == "") {
+                document.getElementById("txtHint").innerHTML = "";
+                return;
+            }
+            xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                document.getElementById("txtHint").innerHTML = this.responseText;
+                }
+            };
+            xhttp.open("GET", "getcustomer.php?q="+str, true);
+            xhttp.send();
+            }
+            </script>
+
+            <br>
+
+            <div class="content">
+                <table id="course_table" class=" table table-stribed">
+                    <thead bgcolor="#6cd8dc">
+                        <tr class="table-primary">
+                            <th width="30%">ID</th>
+                            <th width="50%">Topic</th>
+                            <th width="30%">Message</th>
+                        </tr>
+                    </thead>
+                </table>
+                <br>
+                <div align="right">
+                <button type="button" id="add_button" data-toggle="modal" data-target="#userModal" class="btn btn-success">Add Course</button>
+                </div>
+
+            </div>
         </section>
     
         <!-- FOOTER -->

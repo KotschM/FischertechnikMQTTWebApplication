@@ -91,7 +91,6 @@ iframe{
 /* STREET ************/
 
 #street {
-    background: rgb(89, 105, 118);
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -111,7 +110,7 @@ iframe{
 /* PRODUCTION ************/
 
 #production {
-    background: rgb(89, 105, 118);
+    background: #cacaca;
     background-position: center center;
     background-size: cover;
     background-attachment: fixed;
@@ -124,46 +123,42 @@ iframe{
     color: #030303;
 }
 
-/* WORK ************/
+/* Warehouse ************/
 
-form input, textarea {
-    font-family: 'Roboto Slab', serif;
-    font-size: 15px;
-    margin-bottom: 10px;
-    border-radius: 2px;
-    border: 2px solid;
-    border-color: #494949;
-    outline: none;
+#warehouse {
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
 }
-form input:first-child {
-    margin-top: 10px;
+#warehouse h3 {
+    color: #030303;
 }
-form input {
-    width: 552px;
-    height: 30px;
+#warehouse h4 {
+    font-size: 25px;
+    color: #030303;
 }
-form textarea {
-    width: 550px;
-    height: 200px;
-    resize: none;
+
+/* Statistic ************/
+#statistic {
+    background: #cacaca;
+    background-position: center center;
+    background-size: cover;
+    background-attachment: fixed;
 }
-.input_text {
-    color: #494949;
-    padding-left: 10px;
+#statistic h3 {
+    color: #030303;
 }
-.button {
-    background-color: #f0f0f0;
-    color: #494949;
-    width: 566px;
-    height: 50px;
+#statistic h4 {
+    font-size: 25px;
+    color: #030303;
 }
-.button:hover {
-    background-color: #494949;
-    color: #f0f0f0;
+
+.content{
+    max-width: 800px;
+    margin: auto;
 }
 
 /* FOOTER ************/
-
 footer {
     width: 100%;
     height: 70px;
