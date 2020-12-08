@@ -1,4 +1,4 @@
 <?php
-$connection = new PDO( 'mysql:host=localhost;dbname=course_db', 'root', '' );
+$connection = new PDO( 'mysql:host=localhost;dbname=FromWebToFactory', 'raspberry', 'ftpiuser' );
 ?>
                            
