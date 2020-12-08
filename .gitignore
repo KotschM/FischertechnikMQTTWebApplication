@@ -37,4 +37,4 @@
 bin/
 obj/
 -p/
-settings.json
+.vscode/settings.json
