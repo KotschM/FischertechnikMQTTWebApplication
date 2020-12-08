@@ -37,3 +37,4 @@
 bin/
 obj/
 -p/
+settings.json
