@@ -157,7 +157,7 @@
                 </table>
                 <br>
                 <div align="right">
-                <button type="button" id="add_button" data-toggle="modal" data-target="#userModal" class="btn btn-success">Add Course</button>
+                <button type="button" id="add_button" data-toggle="modal" data-target="#userModal" class="btn btn-success">Add Message</button>
                 </div>
 
             </div>
@@ -180,12 +180,12 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">×</button>
-                    <h4 class="modal-title">Add Course</h4>
+                    <h4 class="modal-title">Add Message</h4>
                 </div>
                 <div class="modal-body">
-                    <label>Enter Course Name</label>
+                    <label>Enter Topic</label>
                     <input type="text" name="course" id="course" class="form-control"/><br>
-                    <label>Enter Number of Students</label>
+                    <label>Enter Message</label>
                     <input type="text" name="students" id="students" class="form-control"/><br>
                 </div>
                 <div class="modal-footer">
@@ -203,7 +203,7 @@
     $(document).ready(function(){
         $('#add_button').click(function(){
             $('#course_form')[0].reset();
-            $('.modal-title').text("Add Course Details");
+            $('.modal-title').text("Add Message");
             $('#action').val("Add");
             $('#operation').val("Add")
         });
@@ -250,7 +250,7 @@
         }
         else
         {
-            alert("Course Name, Number of students Fields are Required");
+            alert("Topic and Message Fields are Required");
         }
     });
     
@@ -267,7 +267,7 @@
                 $('#id').val(data.id);
                 $('#course').val(data.course);
                 $('#students').val(data.students);
-                $('.modal-title').text("Edit Course Details");
+                $('.modal-title').text("Edit Message Details");
                 $('#course_id').val(course_id);
                 $('#action').val("Save");
                 $('#operation').val("Edit");
@@ -278,7 +278,7 @@
     $(document).on('click','.delete', function(){
 
         var course_id = $(this).attr("id");
-        if(confirm("Are you sure want to delete this user?"))
+        if(confirm("Are you sure want to delete this message?"))
         {
             $.ajax({
                 url:"delete.php",
