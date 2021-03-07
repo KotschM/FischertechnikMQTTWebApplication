@@ -1,1 +1,0 @@
-# LATEX_Studienarbeit_Fischertechnik
