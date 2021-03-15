@@ -1,0 +1,29 @@
+{% extends 'factoryWebsite/main.html' %}
+{%  load static %}
+{% block content %}
+<h1>Test</h1>
+<textarea id="chat-log" cols="100" rows="20"></textarea><br>
+{{ customer_name|json_script:"customer_name" }}
+<script type="text/javascript">
+    document.getElementById('cart-symbol').classList.add("hidden");
+
+    const customer_name = JSON.parse(document.getElementById('customer_name').textContent);
+
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/checkout/'
+        + customer_name
+        + '/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#chat-log').value += (data.message + '\n');
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+</script>
+{% endblock content %}
