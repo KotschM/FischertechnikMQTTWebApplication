@@ -38,3 +38,5 @@ bin/
 obj/
 -p/
 .vscode/settings.json
+deps/
+FactoryLib/
