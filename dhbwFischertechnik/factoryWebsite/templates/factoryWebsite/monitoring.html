@@ -1,11 +1,22 @@
 {% extends 'factoryWebsite/main.html' %}
 {% load static %}
 {% block content %}
+<div class="row">
+    <div class="box-element product">
+        <h1>Farb-Werte</h1>
+        <textarea id="chat-log" cols="50" rows="1"></textarea><br>
+    </div>
 
-<h1>Hallo Welt!</h1>
-<textarea id="chat-log" cols="100" rows="20"></textarea><br>
-<input id="chat-message-input" type="text" size="100"><br>
-<input id="chat-message-submit" type="button" value="Send">
+    <div class="box-element product">
+        <h1>Temperatur-Werte</h1>
+        <textarea id="temperature-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Spannungs-Werte</h1>
+        <textarea id="voltage-log" cols="50" rows="1"></textarea><br>
+    </div>
+</div>
 
 <script type="text/javascript">
     document.getElementById('cart-symbol').classList.add("hidden");
@@ -18,20 +29,13 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value += (data.message + '\n');
+        document.querySelector('#chat-log').value = (data.color + '\n');
+        document.querySelector('#temperature-log').value = (data.temperature + '\n');
+        document.querySelector('#voltage-log').value = (data.voltage + '\n');
     };
 
     chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
-    };
-
-    document.querySelector('#chat-message-submit').onclick = function(e) {
-        const messageInputDom = document.querySelector('#chat-message-input');
-        const message = messageInputDom.value;
-        chatSocket.send(JSON.stringify({
-            'message': message
-        }));
-        messageInputDom.value = '';
     };
 </script>
 

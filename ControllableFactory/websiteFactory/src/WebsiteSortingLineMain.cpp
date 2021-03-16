@@ -4,74 +4,125 @@
 #include "debug.h"
 #include "config.h"
 
+enum SortingLineState
+{
+    WAITING,
+    WORKING
+};
+
 TXT txt;
 TxtMqttFactoryClient* mqttClient;
 
-//DigitalInput light_sensor_start = txt.digitalInput(1);
-//DigitalInput light_sensor_end = txt.digitalInput(3);
+DigitalInput light_sensor_start = txt.digitalInput(1);
+DigitalInput light_sensor_end = txt.digitalInput(3);
 Motor belt = txt.motor(1);
-//Counter counter = txt.counter(1);
-//ColorSensor color_sensor = txt.colorSensor(2);
+Counter counter = txt.counter(1);
+ColorSensor color_sensor = txt.colorSensor(2);
 Output comp = txt.output(8);
 Output white = txt.output(5);
 Output red = txt.output(6);
 Output blue = txt.output(7);
 
-// Monitor
-//NTC motorTemperture = txt.ntc(4);
-//Voltage motorVoltage = txt.voltage(5);
+NTC motorTemperture = txt.ntc(4);
+Voltage motorVoltage = txt.voltage(5);
 
-bool compStat = false;
-bool whiteStat = false;
-bool redStat = false;
-bool blueStat = false;
-bool beltStat = false;
-void topicCommand(const std::string &message)
-{
-    if (message.compare("AirCompressor") == 0)
-    {
-        compStat = !compStat;
-    }else
-    {
-        if (message.compare("White") == 0)
-        {
-            whiteStat = !whiteStat;
-        }else
-        {
-            if (message.compare("Red") == 0)
-            {
-                redStat = !redStat;
-            }else
-            {
-                if (message.compare("Blue") == 0)
-                {
-                    blueStat = !blueStat;
-                }else
-                {
-                    if (message.compare("Belt") == 0)
-                    {
-                        beltStat = !beltStat;
-                    }
-                }
-            }
-        }
-    }
-}
+SortingLineState colorDetectionUnit = SortingLineState::WAITING;
+SortingLineState sortingUnit = SortingLineState::WAITING;
+
+void SortWorkpiece(Color color);
+void ColorDetection();
 
 int main(void)
 {
-    mqttClient = new TxtMqttFactoryClient("SortingLine", "192.168.178.100", "", "");
+    readConfig();
+    mqttClient = new TxtMqttFactoryClient("SortingLine", ip_adress, "", "");
     mqttClient->connect(1000);
-    mqttClient->subTopicAsync("/factory/sortingLine", topicCommand);
+
+    std::thread monitor = std::thread([] {
+        while (true)
+        {
+            std::string message = "{\"Color\":\"" + std::to_string(color_sensor.value()) 
+                                    + "\", \"Temperature\":\"" + std::to_string(motorTemperture.getTemperature()) 
+                                    + "\", \"Voltage\":\"" + std::to_string(motorVoltage.value()) 
+                                    + "\"}";
+            mqttClient->publishMessageAsync("Factory/Test", message);
+            sleep(500ms);
+        }
+    });
+    monitor.detach();
+
+    std::thread detection = std::thread(ColorDetection);
 
     while (true)
     {
-        compStat ? comp.on() : comp.off();
-        whiteStat ? white.on() : white.off();
-        redStat ? red.on() : red.off();
-        blueStat ? blue.on() : blue.off();
-        beltStat ? belt.right(1000) : belt.stop();
+        if (colorDetectionUnit == SortingLineState::WORKING || sortingUnit == SortingLineState::WORKING)
+        {
+            belt.right(512);
+        }
+        else
+        {
+            belt.stop();
+            mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_STATE, "bereit", 0, true);
+        }
+        sleep(50ms);
     }
     delete mqttClient;
     return 0;
+}
+
+void ColorDetection()
+{
+    while (true)
+    {
+        light_sensor_start.waitFor(DigitalState::LOW);
+        colorDetectionUnit = SortingLineState::WORKING;
+
+        int min = color_sensor.value();
+        while (light_sensor_end.value())
+        {
+            sleep(10ms);
+            if (color_sensor.value() < min)
+            {
+                min = color_sensor.value();
+            }
+        }
+
+        //std::string message = "{\"Color\":\"" + std::to_string(min) + "\", \"Temperature\":\"" + std::to_string(motorTemperture.getTemperature()) + "\"}";
+           
+        //mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_LAST_COLOR, std::to_string(convertToColor(min, blue_lower, red_lower)));
+        //mqttClient->publishMessageAsync("Factory/Test", message);
+
+        std::thread sort = std::thread(SortWorkpiece, convertToColor(min, blue_lower, red_lower));
+        sort.detach();
+        colorDetectionUnit = SortingLineState::WAITING;
+    }
+}
+
+void SortWorkpiece(Color color)
+{
+    sortingUnit = SortingLineState::WORKING;
+    //mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_STATE, "Werkstück sortieren", DFLT_QUALITY_OF_SERVICE, true);
+
+    comp.on();
+    switch (color)
+    {
+    case Color::WHITE:
+        counter.waitSteps(6);
+        white.on();
+        break;
+    case Color::RED:
+        counter.waitSteps(16);
+        red.on();
+        break;
+    case Color::BLUE:
+        counter.waitSteps(26);
+        blue.on();
+        break;
+    }
+    sleep(100ms);
+    white.off();
+    red.off();
+    blue.off();
+    comp.off();
+    sortingUnit = SortingLineState::WAITING;
 }

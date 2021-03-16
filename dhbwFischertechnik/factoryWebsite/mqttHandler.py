@@ -6,14 +6,18 @@ from channels.layers import get_channel_layer
 
 def Test_Data_Handler(data):
     json_Dict = json.loads(data)
-    message = json_Dict['Text']
+    color = json_Dict['Color']
+    temperature = json_Dict['Temperature']
+    voltage = json_Dict['Voltage']
     print('Inside Handler')
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         'sensors_monitoring',
         {
             'type': 'monitoring_message',
-            'message': message
+            'color': color,
+            'temperature': temperature,
+            'voltage': voltage
         }
     )
 

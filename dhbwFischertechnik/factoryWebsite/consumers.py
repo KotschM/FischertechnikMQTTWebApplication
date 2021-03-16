@@ -22,24 +22,33 @@ class MonitoringConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
         text_data_json = json.loads(text_data)
-        message = text_data_json['message']
+        color = text_data_json['Color']
+        temperature = text_data_json['Temperature']
+        voltage = text_data_json['Voltage']
+
         print('Normal Receive')
 
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
                 'type': 'monitoring_message',
-                'message': message
+                'color': color,
+                'temperature': temperature,
+                'voltage': voltage
             }
         )
 
     # Receive message from room group
     def monitoring_message(self, event):
-        message = event['message']
+        color = event['color']
+        temperature = event['temperature']
+        voltage = event['voltage']
 
         # Send message to WebSocket
         self.send(text_data=json.dumps({
-            'message': message
+            'color': color,
+            'temperature': temperature,
+            'voltage': voltage
         }))
 
 
