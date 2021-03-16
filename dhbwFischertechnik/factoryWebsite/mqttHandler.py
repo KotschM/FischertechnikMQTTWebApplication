@@ -12,7 +12,7 @@ def Test_Data_Handler(data):
     async_to_sync(channel_layer.group_send)(
         'sensors_monitoring',
         {
-            'type': 'chat_message',
+            'type': 'monitoring_message',
             'message': message
         }
     )

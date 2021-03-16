@@ -34,7 +34,7 @@ class MonitoringConsumer(WebsocketConsumer):
         )
 
     # Receive message from room group
-    def chat_message(self, event):
+    def monitoring_message(self, event):
         message = event['message']
 
         # Send message to WebSocket
