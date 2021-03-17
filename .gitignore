@@ -34,7 +34,6 @@
 
 #custom
 *compiled
-bin/
 obj/
 -p/
 .vscode/settings.json

@@ -45,7 +45,7 @@ int main(void)
                                     + "\", \"Temperature\":\"" + std::to_string(motorTemperture.getTemperature()) 
                                     + "\", \"Voltage\":\"" + std::to_string(motorVoltage.value()) 
                                     + "\"}";
-            mqttClient->publishMessageAsync("Factory/Test", message);
+            mqttClient->publishMessageAsync("Factory/Monitoring", message);
             sleep(500ms);
         }
     });

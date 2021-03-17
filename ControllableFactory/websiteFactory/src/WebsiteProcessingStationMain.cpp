@@ -4,7 +4,7 @@
 #include "config.h"
 
 TXT txt;
-TxtMqttFactoryClient* mqttClient;
+//TxtMqttFactoryClient* mqttClient;
 
 TwoRefAxis oven = TwoRefAxis{txt, 5, 10, 9};
 TwoRefAxis vacuum_roboter = TwoRefAxis{txt, 6, 5, 11};
@@ -28,8 +28,8 @@ void ProcessWorkpiece();
 int main(void)
 {
     readConfig();
-    mqttClient = new TxtMqttFactoryClient("ProcessingStation", ip_adress, "", "");
-    mqttClient->connect(1000);
+    //mqttClient = new TxtMqttFactoryClient("ProcessingStation", ip_adress, "", "");
+    //mqttClient->connect(1000);
 
     comp.on();
     oven_gate.on();
@@ -50,7 +50,7 @@ int main(void)
         ProcessWorkpiece();
     }
 
-    delete mqttClient;
+    //delete mqttClient;
     return 0;
 }
 
