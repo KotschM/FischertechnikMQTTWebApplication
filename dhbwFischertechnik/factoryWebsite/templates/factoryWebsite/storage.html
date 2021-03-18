@@ -1,0 +1,78 @@
+{% extends 'factoryWebsite/main.html' %}
+{% load static %}
+{% block content %}
+<div class="row">
+    <div class="box-element product">
+        <h1>Storage 0</h1>
+        <textarea id="storage0-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 1</h1>
+        <textarea id="storage1-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 2</h1>
+        <textarea id="storage2-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 3</h1>
+        <textarea id="storage3-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 4</h1>
+        <textarea id="storage4-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 5</h1>
+        <textarea id="storage5-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 6</h1>
+        <textarea id="storage6-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 7</h1>
+        <textarea id="storage7-log" cols="50" rows="1"></textarea><br>
+    </div>
+
+    <div class="box-element product">
+        <h1>Storage 8</h1>
+        <textarea id="storage8-log" cols="50" rows="1"></textarea><br>
+    </div>
+</div>
+
+<script type="text/javascript">
+    document.getElementById('cart-symbol').classList.add("hidden");
+
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/storage/'
+    );
+
+    chatSocket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        document.querySelector('#storage0-log').value = (data.storage0);
+        document.querySelector('#storage1-log').value = (data.storage1);
+        document.querySelector('#storage2-log').value = (data.storage2);
+        document.querySelector('#storage3-log').value = (data.storage3);
+        document.querySelector('#storage4-log').value = (data.storage4);
+        document.querySelector('#storage5-log').value = (data.storage5);
+        document.querySelector('#storage6-log').value = (data.storage6);
+        document.querySelector('#storage7-log').value = (data.storage7);
+        document.querySelector('#storage8-log').value = (data.storage8);
+    };
+
+    chatSocket.onclose = function(e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+</script>
+
+{% endblock content %}

@@ -47,6 +47,32 @@ def Monitoring_Data_Handler(data):
 def Storage_Data_Handler(data):
     print(data)
     json_Dict = json.loads(data)
+    storage0 = json_Dict['Storage0']
+    storage1 = json_Dict['Storage1']
+    storage2 = json_Dict['Storage2']
+    storage3 = json_Dict['Storage3']
+    storage4 = json_Dict['Storage4']
+    storage5 = json_Dict['Storage5']
+    storage6 = json_Dict['Storage6']
+    storage7 = json_Dict['Storage7']
+    storage8 = json_Dict['Storage8']
+
+    channel_layer = get_channel_layer()
+    async_to_sync(channel_layer.group_send)(
+        'storage_monitoring',
+        {
+            'type': 'storage_message',
+            'storage0': storage0,
+            'storage1': storage1,
+            'storage2': storage2,
+            'storage3': storage3,
+            'storage4': storage4,
+            'storage5': storage5,
+            'storage6': storage6,
+            'storage7': storage7,
+            'storage8': storage8
+        }
+    )
 
 
 def topic_Data_Handler(topic, data):

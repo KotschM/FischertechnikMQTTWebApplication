@@ -29,9 +29,9 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value = (data.color + '\n');
-        document.querySelector('#temperature-log').value = (data.temperature + '\n');
-        document.querySelector('#voltage-log').value = (data.voltage + '\n');
+        document.querySelector('#chat-log').value = (data.color);
+        document.querySelector('#temperature-log').value = (data.temperature);
+        document.querySelector('#voltage-log').value = (data.voltage);
     };
 
     chatSocket.onclose = function(e) {
