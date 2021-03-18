@@ -59,11 +59,15 @@ int FileStorage::getPositionOf(WarehouseContent content)
 
 std::string FileStorage::getAsJson()
 {
-    Json::Value msg;
+    std::string temp = "{";
+    int counter = 0;
     for (uint32_t i = 0; i < STORAGE_SIZE; i++)
     {
-        msg.append((int)values[i]);
+        temp += "\"Storage" + std::to_string(counter) + "\":\"" + std::to_string((int)values[i]) + "\",";
+        counter ++;
     }
+    std::string message = temp.substr(0, temp.size()-1);
+    message += "}";
 
-    return jsonToString(msg);
+    return message;
 }

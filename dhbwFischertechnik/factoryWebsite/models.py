@@ -60,3 +60,27 @@ class OrderItem(models.Model):
     def get_total(self):
         total = self.product.price * self.quantity
         return total
+
+
+class Storage(models.Model):
+    class BoxColors(models.TextChoices):
+        WHITE = 'W'
+        RED = 'R'
+        BLUE = 'B'
+
+    class BoxStatus(models.TextChoices):
+        EMPTY = 'E'
+        EMPTYBOX = 'EB'
+        FULL = 'F'
+
+    x = models.SmallIntegerField()
+    y = models.SmallIntegerField()
+    color = models.CharField(
+        max_length=1,
+        choices=BoxColors.choices,
+    )
+    status = models.CharField(
+        max_length=2,
+        choices=BoxStatus.choices,
+        default=BoxStatus.FULL,
+    )
