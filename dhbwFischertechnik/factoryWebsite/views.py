@@ -56,6 +56,13 @@ def status(request, customer_name):
     })
 
 
+def sendToFactory(request):
+    data = json.loads(request.body)
+    formData = data['form']
+    mqttc.publish("Factory/Order", str(formData))
+    return JsonResponse('Storage was updated', safe=False)
+
+
 def updateItem(request):
     data = json.loads(request.body)
     productId = data['productId']
@@ -77,8 +84,6 @@ def updateItem(request):
     if orderItem.quantity <= 0:
         orderItem.delete()
 
-    # mqttc.publish("Factory/Order", str(data))
-
     return JsonResponse('Item was added', safe=False)
 
 
@@ -98,7 +103,5 @@ def processOrder(request):
     if total == float(order.get_cart_total):
         order.complete = True
     order.save()
-
-    # mqttc.publish("Factory/Test", str(data))
 
     return JsonResponse('Payment complete!', safe=False)

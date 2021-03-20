@@ -91,7 +91,7 @@ int main()
     while (true)
     {
         mqttClient->publishMessageAsync("Factory/Storage", warehouse.storage.getAsJson());
-        checkAvailableWorkpieces();
+        //checkAvailableWorkpieces();
         mqttClient->publishMessageAsync("Factory/Storage", warehouse.storage.getAsJson());
         sleep(1000ms);
         /*if (beltstate == BeltState::WAREHOUSE && !light_sensor_vacuum_robot.value())

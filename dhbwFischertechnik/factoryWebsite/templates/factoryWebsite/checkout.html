@@ -1,5 +1,5 @@
 {% extends 'factoryWebsite/main.html' %}
-{%  load static %}
+{% load static %}
 {% block content %}
 <div class="row">
     <div class="col-lg-6">
@@ -14,28 +14,6 @@
                         <input required class="form-control" type="email" name="email" placeholder="Email...">
                     </div>
                 </div>
-                <!--
-                <div id="shipping-info">
-                    <hr>
-                    <p>Shipping Information:</p>
-                    <hr>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="address" placeholder="Address..">
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="city" placeholder="City..">
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="state" placeholder="State..">
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="zipcode" placeholder="Zip code..">
-                    </div>
-                    <div class="form-field">
-                        <input class="form-control" type="text" name="country" placeholder="Zip code..">
-                    </div>
-                </div>
-                -->
                 <hr>
                 <input id="form-button" class="btn btn-success btn-block" type="submit" value="Continue">
             </form>
@@ -84,7 +62,7 @@
         document.getElementById('payment-info').classList.remove("hidden");
     })
 
-    document.getElementById('make-payment').addEventListener('click', function (e){
+    document.getElementById('make-payment').addEventListener('click', function (){
         submitFormData()
     })
 
@@ -123,7 +101,7 @@
 
             var consumer_ws_name;
             if (form.name.value == undefined) {
-                consumer_ws_name = 'Moris'
+                consumer_ws_name = 'unknownUser'
             }else {
                 consumer_ws_name = form.name.value
             }
