@@ -49,7 +49,7 @@ class MonitoringConsumer(WebsocketConsumer):
         self.send(text_data=json.dumps({
             'color': color,
             'temperature': temperature,
-            'voltage': voltage
+            'voltage': voltage,
         }))
 
 

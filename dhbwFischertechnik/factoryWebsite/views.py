@@ -45,6 +45,10 @@ def storage(request):
     return render(request, 'factoryWebsite/storage.html')
 
 
+def setting(request):
+    return render(request, 'factoryWebsite/setting.html')
+
+
 def status(request, customer_name):
     mqttc.publish("Factory/PushOrder", str(customer_name))
     return render(request, 'factoryWebsite/status.html', {

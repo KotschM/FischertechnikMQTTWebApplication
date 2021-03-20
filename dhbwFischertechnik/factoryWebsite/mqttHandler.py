@@ -1,8 +1,10 @@
 import json
+import time
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
+counter = 0
 
 def Status_Data_Handler(topic, data):
     json_Dict = json.loads(data)
@@ -31,12 +33,14 @@ def Monitoring_Data_Handler(data):
     color = json_Dict['Color']
     temperature = json_Dict['Temperature']
     voltage = json_Dict['Voltage']
+    actualTime = time.time()
     print('Inside Handler')
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         'sensors_monitoring',
         {
             'type': 'monitoring_message',
+            'time': actualTime,
             'color': color,
             'temperature': temperature,
             'voltage': voltage

@@ -1,51 +1,44 @@
 {% extends 'factoryWebsite/main.html' %}
 {% load static %}
 {% block content %}
-<div class="row">
-    <div class="box-element product">
-        <h1>Storage 0</h1>
-        <textarea id="storage0-log" cols="50" rows="1"></textarea><br>
-    </div>
 
-    <div class="box-element product">
-        <h1>Storage 1</h1>
-        <textarea id="storage1-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 2</h1>
-        <textarea id="storage2-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 3</h1>
-        <textarea id="storage3-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 4</h1>
-        <textarea id="storage4-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 5</h1>
-        <textarea id="storage5-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 6</h1>
-        <textarea id="storage6-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 7</h1>
-        <textarea id="storage7-log" cols="50" rows="1"></textarea><br>
-    </div>
-
-    <div class="box-element product">
-        <h1>Storage 8</h1>
-        <textarea id="storage8-log" cols="50" rows="1"></textarea><br>
-    </div>
+<div>
+    <h1>Lagerbestand</h1>
+    <table class="table text-center">
+        <tr>
+            <td>
+                <label id="storage0">Keine Daten</label><br>
+            </td>
+            <td>
+                <label id="storage1">Keine Daten</label><br>
+            </td>
+            <td>
+                <label id="storage2">Keine Daten</label><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="storage3">Keine Daten</label><br>
+            </td>
+            <td>
+                <label id="storage4">Keine Daten</label><br>
+            </td>
+            <td>
+                <label id="storage5">Keine Daten</label><br>
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <label id="storage6">Keine Daten</label><br>
+            </td>
+            <td>
+                <label id="storage7">Keine Daten</label><br>
+            </td>
+            <td>
+                <label id="storage8">Keine Daten</label><br>
+            </td>
+        </tr>
+    </table>
 </div>
 
 <script type="text/javascript">
@@ -59,18 +52,43 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#storage0-log').value = (data.storage0);
-        document.querySelector('#storage1-log').value = (data.storage1);
-        document.querySelector('#storage2-log').value = (data.storage2);
-        document.querySelector('#storage3-log').value = (data.storage3);
-        document.querySelector('#storage4-log').value = (data.storage4);
-        document.querySelector('#storage5-log').value = (data.storage5);
-        document.querySelector('#storage6-log').value = (data.storage6);
-        document.querySelector('#storage7-log').value = (data.storage7);
-        document.querySelector('#storage8-log').value = (data.storage8);
+        const dataArray = [data.storage0, data.storage1, data.storage2,
+            data.storage3, data.storage4, data.storage5,
+            data.storage6, data.storage7, data.storage8];
+        dataArray.forEach(setTextSwitchCase);
     };
 
-    chatSocket.onclose = function(e) {
+    function setTextSwitchCase(item, index){
+        switch (parseInt(item)){
+            case -1:
+                document.querySelector('#storage' + index).innerHTML = "Keine Kiste";
+                document.querySelector('#storage' + index).style.backgroundColor = "grey";
+                document.querySelector('#storage' + index).style.color = "black";
+                break;
+            case 0:
+                document.querySelector('#storage' + index).innerHTML = "Leere Kiste";
+                document.querySelector('#storage' + index).style.backgroundColor = "grey";
+                document.querySelector('#storage' + index).style.color = "black";
+                break;
+            case 1:
+                document.querySelector('#storage' + index).innerHTML = "Weißer Stein";
+                document.querySelector('#storage' + index).style.backgroundColor = "grey";
+                document.querySelector('#storage' + index).style.color = "white";
+                break;
+            case 2:
+                document.querySelector('#storage' + index).innerHTML = "Roter Stein";
+                document.querySelector('#storage' + index).style.backgroundColor = "grey";
+                document.querySelector('#storage' + index).style.color = "red";
+                break;
+            case 3:
+                document.querySelector('#storage' + index).innerHTML = "Blauer Stein";
+                document.querySelector('#storage' + index).style.backgroundColor = "grey";
+                document.querySelector('#storage' + index).style.color = "blue";
+                break;
+        }
+    }
+
+    chatSocket.onclose = function() {
         console.error('Chat socket closed unexpectedly');
     };
 </script>
