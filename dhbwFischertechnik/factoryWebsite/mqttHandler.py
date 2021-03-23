@@ -1,15 +1,22 @@
 import json
-import time
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 
-counter = 0
+monitorMainUnit = False
+temperatureMainUnit = ""
+voltageMainUnit = ""
+
+monitorSortingLine = False
+colorSortingLine = ""
+temperatureSortingLine = ""
+voltageSortingLine = ""
+
 
 def Status_Data_Handler(topic, data):
     json_Dict = json.loads(data)
     message = json_Dict['Text']
-    short_topic = topic.partition("Factory/Status/")[2]
+    short_topic = topic.partition("Factory/Get/Status/")[2]
     customer_group_name = 'name_%s' % short_topic
 
     channel_layer = get_channel_layer()
@@ -21,35 +28,40 @@ def Status_Data_Handler(topic, data):
         }
     )
 
-    # newOrder = Order()
-    # newOrder.color_text = SensorID
-    # newOrder.pub_date = Data_and_Time
-    # newOrder.finished = Temperature
-    # newOrder.save()
 
-
-def Monitoring_Data_Handler(data):
+def Monitoring_Data_Handler(topic, data):
+    global colorSortingLine, temperatureSortingLine, voltageSortingLine, temperatureMainUnit, voltageMainUnit, \
+        monitorSortingLine, monitorMainUnit
     json_Dict = json.loads(data)
-    color = json_Dict['Color']
-    temperature = json_Dict['Temperature']
-    voltage = json_Dict['Voltage']
-    actualTime = time.time()
-    print('Inside Handler')
-    channel_layer = get_channel_layer()
-    async_to_sync(channel_layer.group_send)(
-        'sensors_monitoring',
-        {
-            'type': 'monitoring_message',
-            'time': actualTime,
-            'color': color,
-            'temperature': temperature,
-            'voltage': voltage
-        }
-    )
+    if topic == "Factory/Get/Monitoring/MainUnit":
+        temperatureMainUnit = json_Dict['Temperature']
+        voltageMainUnit = json_Dict['Voltage']
+        monitorMainUnit = True
+
+    elif topic == "Factory/Get/Monitoring/SortingLine":
+        colorSortingLine = json_Dict['Color']
+        temperatureSortingLine = json_Dict['Temperature']
+        voltageSortingLine = json_Dict['Voltage']
+        monitorSortingLine = True
+
+    if monitorMainUnit == True and monitorSortingLine == True:
+        monitorMainUnit = False
+        monitorSortingLine = False
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            'sensors_monitoring',
+            {
+                'type': 'monitoring_message',
+                'colorSortingLine': colorSortingLine,
+                'temperatureSortingLine': temperatureSortingLine,
+                'voltageSortingLine': voltageSortingLine,
+                'temperatureMainUnit': temperatureMainUnit,
+                'voltageMainUnit': voltageMainUnit
+            }
+        )
 
 
 def Storage_Data_Handler(data):
-    print(data)
     json_Dict = json.loads(data)
     storage0 = json_Dict['Storage0']
     storage1 = json_Dict['Storage1']
@@ -80,9 +92,9 @@ def Storage_Data_Handler(data):
 
 
 def topic_Data_Handler(topic, data):
-    if topic.startswith("Factory/Status"):
+    if topic.startswith("Factory/Get/Status"):
         Status_Data_Handler(topic, data)
-    elif topic == "Factory/Monitoring":
-        Monitoring_Data_Handler(data)
-    elif topic == "Factory/Storage":
+    elif topic.startswith("Factory/Get/Monitoring"):
+        Monitoring_Data_Handler(topic, data)
+    elif topic == "Factory/Get/Storage":
         Storage_Data_Handler(data)

@@ -50,16 +50,14 @@ def setting(request):
 
 
 def status(request, customer_name):
-    mqttc.publish("Factory/PushOrder", str(customer_name))
+    mqttc.publish("Factory/Send/Order", str(customer_name))
     return render(request, 'factoryWebsite/status.html', {
         'customer_name': customer_name
     })
 
 
 def sendToFactory(request):
-    data = json.loads(request.body)
-    formData = data['form']
-    mqttc.publish("Factory/Order", str(formData))
+    mqttc.publish("Factory/Send/Storage", request.body)
     return JsonResponse('Storage was updated', safe=False)
 
 

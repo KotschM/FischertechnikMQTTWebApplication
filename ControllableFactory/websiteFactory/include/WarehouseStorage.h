@@ -24,6 +24,7 @@ public:
     virtual void setWorkpieceAt(uint8_t, WarehouseContent) = 0;
     virtual int getPositionOf(WarehouseContent) = 0;
     virtual std::string getAsJson() = 0;
+    virtual void setNewStorage(std::string) = 0;
 };
 
 class FileStorage : public IStorage
@@ -36,6 +37,7 @@ public:
     void setWorkpieceAt(uint8_t, WarehouseContent) override;
     int getPositionOf(WarehouseContent) override;
     std::string getAsJson() override;
+    void setNewStorage(std::string) override;
 };
 
 #endif

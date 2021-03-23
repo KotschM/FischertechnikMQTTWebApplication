@@ -9,27 +9,27 @@
         <td>
             <label>
                 <select id="storage0">
-                    <option value="1">Weiß</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="w">Weiß</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
         <td>
             <label>
                 <select id="storage1">
-                    <option value="1">Weiß</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="w">Weiß</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
         <td>
             <label>
                 <select id="storage2">
-                    <option value="1">Weiß</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="w">Weiß</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
@@ -38,27 +38,27 @@
         <td>
             <label>
                 <select id="storage3">
-                    <option value="2">Rot</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="r">Rot</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
         <td>
             <label>
                 <select id="storage4">
-                    <option value="2">Rot</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="r">Rot</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
         <td>
             <label>
                 <select id="storage5">
-                    <option value="2">Rot</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="r">Rot</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
@@ -67,27 +67,27 @@
         <td>
             <label>
                 <select id="storage6">
-                    <option value="3">Blau</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="b">Blau</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
         <td>
             <label>
                 <select id="storage7">
-                    <option value="3">Blau</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="b">Blau</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
         <td>
             <label>
                 <select id="storage8">
-                    <option value="3">Blau</option>
-                    <option value="0">Leere Kiste</option>
-                    <option value="-1">Keine Kiste</option>
+                    <option value="b">Blau</option>
+                    <option value="e">Leere Kiste</option>
+                    <option value="x">Keine Kiste</option>
                 </select>
             </label>
         </td>
@@ -114,6 +114,16 @@
     })
 
     function sendToFactory(){
+        var storageString = "" + document.getElementById('storage0').value +
+            document.getElementById('storage1').value +
+            document.getElementById('storage2').value +
+            document.getElementById('storage3').value +
+            document.getElementById('storage4').value +
+            document.getElementById('storage5').value +
+            document.getElementById('storage6').value +
+            document.getElementById('storage7').value +
+            document.getElementById('storage8').value
+
         var storageData = {
             'storage0': document.getElementById('storage0').value,
             'storage1': document.getElementById('storage1').value,
@@ -133,7 +143,7 @@
                 'Content-Type':'application/json',
                 'X-CSRFToken':csrftoken,
             },
-            body:JSON.stringify({'form':storageData}),
+            body: storageString,
 
         })
         .then((response) => response.json())

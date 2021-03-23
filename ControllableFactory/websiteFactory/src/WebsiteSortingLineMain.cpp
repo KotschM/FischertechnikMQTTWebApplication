@@ -45,8 +45,8 @@ int main(void)
                                     + "\", \"Temperature\":\"" + std::to_string(motorTemperture.getTemperature()) 
                                     + "\", \"Voltage\":\"" + std::to_string(motorVoltage.value()) 
                                     + "\"}";
-            mqttClient->publishMessageAsync("Factory/Monitoring", message);
-            sleep(500ms);
+            mqttClient->publishMessageAsync("Factory/Get/Monitoring/SortingLine", message);
+            sleep(1000ms);
         }
     });
     monitor.detach();
@@ -62,7 +62,7 @@ int main(void)
         else
         {
             belt.stop();
-            mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_STATE, "bereit", 0, true);
+            //mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_STATE, "bereit", 0, true);
         }
         sleep(50ms);
     }

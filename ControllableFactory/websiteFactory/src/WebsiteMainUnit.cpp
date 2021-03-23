@@ -27,7 +27,6 @@ DigitalInput white_available = txt.digitalInput(12);
 DigitalInput red_available = txt.digitalInput(13);
 DigitalInput blue_available = txt.digitalInput(14);
 
-// Monitor
 NTC motorTemperature = txt.ntc(15);
 Voltage vaccuumVoltage = txt.voltage(16);
 
@@ -44,11 +43,16 @@ void getFullBox();
 void driveBeltTo(BeltState);
 std::thread driveBeltToAsync(BeltState);
 
+void topicCommand(const std::string &message){
+    warehouse.storage.setNewStorage(message);
+}
+
 int main()
 {
     readConfig();
     mqttClient = new TxtMqttFactoryClient("MainUnit", ip_adress, "", "");
     mqttClient->connect(1000);
+    mqttClient->subTopicAsync("Factory/Send/Storage", topicCommand);
 
     if (DEBUG_MAINUNIT) {
         std::thread([]() {
@@ -60,7 +64,6 @@ int main()
         }).detach();
     }
 
-    // start monitor thread
     std::thread([] {
         while (true)
         {
@@ -73,27 +76,30 @@ int main()
     std::thread thread_vacuum = robot.referenceAsync();
     std::thread thread_warehouse = warehouse.referenceAsync();
 
-    mqttClient->publishMessageAsync(TOPIC_INPUT_STOCK, warehouse.storage.getAsJson(), DFLT_QUALITY_OF_SERVICE, true);
-    mqttClient->publishMessageAsync(TOPIC_INPUT_VACUUMROBOT_STATE, "referenzieren", DFLT_QUALITY_OF_SERVICE, true);
-    mqttClient->publishMessageAsync(TOPIC_INPUT_WAREHOUSE_STATE, "referenzieren", DFLT_QUALITY_OF_SERVICE, true);
-
-    // TODO check belt
+    //mqttClient->publishMessageAsync(TOPIC_INPUT_STOCK, warehouse.storage.getAsJson(), DFLT_QUALITY_OF_SERVICE, true);
+    //mqttClient->publishMessageAsync(TOPIC_INPUT_VACUUMROBOT_STATE, "referenzieren", DFLT_QUALITY_OF_SERVICE, true);
+    //mqttClient->publishMessageAsync(TOPIC_INPUT_WAREHOUSE_STATE, "referenzieren", DFLT_QUALITY_OF_SERVICE, true);
 
     thread_vacuum.join();
     thread_warehouse.join();
 
-    mqttClient->publishMessageAsync(TOPIC_INPUT_VACUUMROBOT_STATE, "bereit", DFLT_QUALITY_OF_SERVICE, true);
-    mqttClient->publishMessageAsync(TOPIC_INPUT_WAREHOUSE_STATE, "bereit", DFLT_QUALITY_OF_SERVICE, true);
+    //mqttClient->publishMessageAsync(TOPIC_INPUT_VACUUMROBOT_STATE, "bereit", DFLT_QUALITY_OF_SERVICE, true);
+    //mqttClient->publishMessageAsync(TOPIC_INPUT_WAREHOUSE_STATE, "bereit", DFLT_QUALITY_OF_SERVICE, true);
 
     //std::thread run = std::thread(checkAvailableWorkpieces);
     //run.detach();
 
     while (true)
     {
-        mqttClient->publishMessageAsync("Factory/Storage", warehouse.storage.getAsJson());
+        mqttClient->publishMessageAsync("Factory/Get/Storage", warehouse.storage.getAsJson());
         //checkAvailableWorkpieces();
-        mqttClient->publishMessageAsync("Factory/Storage", warehouse.storage.getAsJson());
+        //mqttClient->publishMessageAsync("Factory/Storage", warehouse.storage.getAsJson());
+        std::string message = "{\"Temperature\":\"" + std::to_string(motorTemperature.getTemperature()) 
+                                    + "\", \"Voltage\":\"" + std::to_string(vaccuumVoltage.value()) 
+                                    + "\"}";
+        mqttClient->publishMessageAsync("Factory/Get/Monitoring/MainUnit", message);
         sleep(1000ms);
+
         /*if (beltstate == BeltState::WAREHOUSE && !light_sensor_vacuum_robot.value())
         {
             belt.left(450);

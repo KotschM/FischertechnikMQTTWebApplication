@@ -1,6 +1,58 @@
 {% extends 'factoryWebsite/main.html' %}
 {% load static %}
 {% block content %}
+<h1>Sortierstraße</h1>
+<table class="table text-center">
+    <tr>
+    <td>
+        <label>Farbsensor ==> </label><br>
+    </td>
+    <td>
+        <label id="color-sensor">Keine Daten</label><br>
+    </td>
+    </tr>
+    <tr>
+    <td>
+        <label>Temperatursensor ==> </label><br>
+    </td>
+    <td>
+        <label id="temperature-sorting-sensor">Keine Daten</label><br>
+    </td>
+    </tr>
+    <tr>
+    <td>
+        <label>Spannungsensor ==> </label><br>
+    </td>
+    <td>
+        <label id="voltage-sorting-sensor">Keine Daten</label><br>
+    </td>
+    </tr>
+</table>
+
+<h1>Hochregallager</h1>
+<table class="table text-center">
+    <tr>
+    <td>
+        <label>Temperatursensor ==> </label><br>
+    </td>
+    <td>
+        <label id="temperature-main-sensor">Keine Daten</label><br>
+    </td>
+    </tr>
+    <tr>
+    <td>
+        <label>Spannungsensor ==> </label><br>
+    </td>
+    <td>
+        <label id="voltage-main-sensor">Keine Daten</label><br>
+    </td>
+    </tr>
+</table>
+
+
+
+
+<!--
 <div class="row">
     <div class="box-element product">
         <h1>Farb-Werte</h1>
@@ -17,6 +69,7 @@
         <textarea id="voltage-log" cols="50" rows="1"></textarea><br>
     </div>
 </div>
+-->
 
 <script type="text/javascript">
     document.getElementById('cart-symbol').classList.add("hidden");
@@ -29,9 +82,11 @@
 
     chatSocket.onmessage = function(e) {
         const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value = (data.color);
-        document.querySelector('#temperature-log').value = (data.temperature);
-        document.querySelector('#voltage-log').value = (data.voltage);
+        document.querySelector('#color-sensor').innerHTML = (data.colorSortingLine);
+        document.querySelector('#temperature-sorting-sensor').innerHTML = (data.temperatureSortingLine);
+        document.querySelector('#voltage-sorting-sensor').innerHTML = (data.voltageSortingLine);
+        document.querySelector('#temperature-main-sensor').innerHTML = (data.temperatureMainUnit);
+        document.querySelector('#voltage-main-sensor').innerHTML = (data.voltageMainUnit);
     };
 
     chatSocket.onclose = function(e) {

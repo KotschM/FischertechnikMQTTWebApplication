@@ -5,6 +5,7 @@ MQTT_Broker = "localhost"
 MQTT_Port = 1883
 Keep_Alive_Interval = 60
 MQTT_Topic = "Factory/#"
+# MQTT_Topic = "Factory/Get/#"
 
 
 def on_connect(self, mosq, obj, rc):
@@ -18,7 +19,7 @@ def on_disconnect(self, mosq, obj, rc):
 
 def on_message(mosq, obj, msg):
     topic_Data_Handler(msg.topic, msg.payload)
-    print('Received ', {msg.payload.decode()}, ' from ', {msg.topic}, ' topic')
+    # print('Received ', {msg.payload.decode()}, ' from ', {msg.topic}, ' topic')
 
 
 def on_subscribe(mosq, obj, mid, granted_qos):

@@ -71,3 +71,28 @@ std::string FileStorage::getAsJson()
 
     return message;
 }
+
+void FileStorage::setNewStorage(std::string storageString)
+{
+    std::map<char, WarehouseContent> c2w;
+    c2w['x'] = WarehouseContent::NO_BOX;
+    c2w['e'] = WarehouseContent::EMPTY_BOX;
+    c2w['w'] = WarehouseContent::WHITE;
+    c2w['r'] = WarehouseContent::RED;
+    c2w['b'] = WarehouseContent::BLUE;
+    
+    char c[STORAGE_SIZE];
+    int i;
+    for (i = 0; i < STORAGE_SIZE; i++) {
+        c[i] = storageString[i];
+    }
+
+    for (int i = 0; i < STORAGE_SIZE; i++)
+    {
+        values[i] = c2w[c[i]];
+    }
+
+    std::ofstream file(STORAGE_LOCATION);
+    file.write(c, STORAGE_SIZE);
+    file.close();
+}
