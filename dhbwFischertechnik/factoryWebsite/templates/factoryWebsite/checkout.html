@@ -65,6 +65,7 @@
             'email':null,
             'total':total,
             'timestamp':timestamp,
+            'color':cart['color']
         }
 
         if (user === 'AnonymousUser'){
@@ -102,7 +103,7 @@
         .then((data) => {
             console.log('Success:', data);
 
-            cart = {}
+            cart = {"count": 0, "color": 0}
             document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 
             let trackOrder = confirm("Bestellung erfolgreich :) \nMöchten Sie die Bestellung verfolgen?");

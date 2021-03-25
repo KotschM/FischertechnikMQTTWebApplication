@@ -87,6 +87,7 @@ def updateItem(request):
 def processOrder(request):
     data = json.loads(request.body)
     transaction_id = data['form']['timestamp']
+    color = data['form']['color']
 
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -101,6 +102,8 @@ def processOrder(request):
         order.complete = True
     order.save()
 
-    mqttc.publish("Factory/Send/Order", str(transaction_id), 2)
+    orderJson = {"timestamp": transaction_id, "color": color}
+
+    mqttc.publish("Factory/Send/Order", str(orderJson), 2)
 
     return JsonResponse('Payment complete!', safe=False)
