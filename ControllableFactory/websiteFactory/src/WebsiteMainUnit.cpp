@@ -97,7 +97,7 @@ int main()
         std::string message = "{\"Temperature\":\"" + std::to_string(motorTemperature.getTemperature()) 
                                     + "\", \"Voltage\":\"" + std::to_string(vaccuumVoltage.value()) 
                                     + "\"}";
-        mqttClient->publishMessageAsync("Factory/Get/Monitoring/MainUnit", message);
+        mqttClient->publishMessageAsync("Factory/Get/Monitoring/MainUnit", message, 0);
         sleep(1000ms);
 
         /*if (beltstate == BeltState::WAREHOUSE && !light_sensor_vacuum_robot.value())

@@ -49,15 +49,14 @@ def setting(request):
     return render(request, 'factoryWebsite/setting.html')
 
 
-def status(request, customer_name):
-    mqttc.publish("Factory/Send/Order", str(customer_name))
+def status(request, customer_timestamp):
     return render(request, 'factoryWebsite/status.html', {
-        'customer_name': customer_name
+        'customer_timestamp': customer_timestamp
     })
 
 
 def sendToFactory(request):
-    mqttc.publish("Factory/Send/Storage", request.body)
+    mqttc.publish("Factory/Send/Storage", request.body, 0)
     return JsonResponse('Storage was updated', safe=False)
 
 
@@ -86,8 +85,8 @@ def updateItem(request):
 
 
 def processOrder(request):
-    transaction_id = datetime.datetime.now().timestamp()
     data = json.loads(request.body)
+    transaction_id = data['form']['timestamp']
 
     if request.user.is_authenticated:
         customer = request.user.customer
@@ -101,5 +100,7 @@ def processOrder(request):
     if total == float(order.get_cart_total):
         order.complete = True
     order.save()
+
+    mqttc.publish("Factory/Send/Order", str(transaction_id), 2)
 
     return JsonResponse('Payment complete!', safe=False)

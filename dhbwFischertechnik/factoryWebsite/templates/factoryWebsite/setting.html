@@ -124,18 +124,6 @@
             document.getElementById('storage7').value +
             document.getElementById('storage8').value
 
-        var storageData = {
-            'storage0': document.getElementById('storage0').value,
-            'storage1': document.getElementById('storage1').value,
-            'storage2': document.getElementById('storage2').value,
-            'storage3': document.getElementById('storage3').value,
-            'storage4': document.getElementById('storage4').value,
-            'storage5': document.getElementById('storage5').value,
-            'storage6': document.getElementById('storage6').value,
-            'storage7': document.getElementById('storage7').value,
-            'storage8': document.getElementById('storage8').value,
-        }
-
         const url = "/setting/sendToFactory/";
         fetch(url, {
             method:'POST',

@@ -59,10 +59,12 @@
 
     function submitFormData(){
         console.log('Payment button clicked')
+        const timestamp = Date.now()
         var userFormData = {
             'name':null,
             'email':null,
             'total':total,
+            'timestamp':timestamp,
         }
 
         if (user === 'AnonymousUser'){
@@ -71,6 +73,20 @@
         }
 
         console.log('User Info:', userFormData)
+
+        /*
+        var storageData = {
+            'storage0': document.getElementById('storage0').value,
+            'storage1': document.getElementById('storage1').value,
+            'storage2': document.getElementById('storage2').value,
+            'storage3': document.getElementById('storage3').value,
+            'storage4': document.getElementById('storage4').value,
+            'storage5': document.getElementById('storage5').value,
+            'storage6': document.getElementById('storage6').value,
+            'storage7': document.getElementById('storage7').value,
+            'storage8': document.getElementById('storage8').value,
+        }
+         */
 
         const url = "/process_order/";
         fetch(url, {
@@ -85,20 +101,17 @@
         .then((response) => response.json())
         .then((data) => {
             console.log('Success:', data);
-            alert('Transaction completed');
 
             cart = {}
             document.cookie ='cart=' + JSON.stringify(cart) + ";domain=;path=/"
 
-            var consumer_ws_name;
-            if (form.name.value == undefined) {
-                consumer_ws_name = 'unknownUser'
+            let trackOrder = confirm("Bestellung erfolgreich :) \nMöchten Sie die Bestellung verfolgen?");
+            if (trackOrder){
+                window.location.pathname = '/checkout/status/' + timestamp + '/';
             }else {
-                consumer_ws_name = form.name.value
+                window.location.pathname = '';
             }
-
-            window.location.pathname = '/checkout/status/' + consumer_ws_name + '/';
-            })
+        })
     }
 </script>
 
