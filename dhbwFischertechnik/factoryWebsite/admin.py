@@ -1,7 +1,22 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Customer)
-admin.site.register(Product)
-admin.site.register(Order)
-admin.site.register(OrderItem)
+
+@admin.register(Customer)
+class CustomerAdmin(admin.ModelAdmin):
+    list_display = ("name", "timestamp")
+
+
+@admin.register(Product)
+class ProductAdmin(admin.ModelAdmin):
+    list_display = ("name", "price", "image")
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ("customer", "complete", "transaction_id")
+
+
+@admin.register(OrderItem)
+class OrderItemAdmin(admin.ModelAdmin):
+    list_display = ("product", "order", "quantity")
