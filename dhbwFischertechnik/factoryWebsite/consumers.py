@@ -22,22 +22,6 @@ class MonitoringConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
         pass
-        # text_data_json = json.loads(text_data)
-        # color = text_data_json['Color']
-        # temperature = text_data_json['Temperature']
-        # voltage = text_data_json['Voltage']
-
-        # print('Normal Receive')
-
-        # async_to_sync(self.channel_layer.group_send)(
-        #    self.room_group_name,
-        #    {
-        #        'type': 'monitoring_message',
-        #        'color': color,
-        #        'temperature': temperature,
-        #        'voltage': voltage
-        #    }
-        # )
 
     def monitoring_message(self, event):
         color = event['colorSortingLine']
@@ -46,7 +30,6 @@ class MonitoringConsumer(WebsocketConsumer):
         temperatureMainUnit = event['temperatureMainUnit']
         voltageMainUnit = event['voltageMainUnit']
 
-        # Send message to WebSocket
         self.send(text_data=json.dumps({
             'colorSortingLine': color,
             'temperatureSortingLine': temperatureSortingLine,
@@ -75,23 +58,10 @@ class StatusConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
         pass
-        # text_data_json = json.loads(text_data)
-        # message = text_data_json['message']
-        # print('Normal Receive')
 
-        # async_to_sync(self.channel_layer.group_send)(
-        #    self.customer_group_name,
-        #    {
-        #        'type': 'status_message',
-        #        'message': message
-        #    }
-        # )
-
-    # Receive message from room group
     def status_message(self, event):
         message = event['message']
 
-        # Send message to WebSocket
         self.send(text_data=json.dumps({
             'message': message
         }))
@@ -115,19 +85,7 @@ class StorageConsumer(WebsocketConsumer):
 
     def receive(self, text_data=None, bytes_data=None):
         pass
-        # text_data_json = json.loads(text_data)
-        # message = text_data_json['message']
-        # print('Normal Receive')
 
-        # async_to_sync(self.channel_layer.group_send)(
-        #    self.room_group_name,
-        #    {
-        #        'type': 'status_message',
-        #        'message': message
-        #    }
-        # )
-
-    # Receive message from room group
     def storage_message(self, event):
         storage0 = event['storage0']
         storage1 = event['storage1']
@@ -139,7 +97,6 @@ class StorageConsumer(WebsocketConsumer):
         storage7 = event['storage7']
         storage8 = event['storage8']
 
-        # Send message to WebSocket
         self.send(text_data=json.dumps({
             'storage0': storage0,
             'storage1': storage1,

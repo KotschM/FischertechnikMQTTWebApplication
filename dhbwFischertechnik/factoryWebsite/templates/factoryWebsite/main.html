@@ -13,8 +13,6 @@
     <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
 
     <script type="text/javascript">
-        var user = '{{ request.user }}'
-
         function getToken(name){
             var cookieValue = null;
             if (document.cookie && document.cookie !== ''){
@@ -67,6 +65,9 @@
                 </li>
                 <li class="nav-item active">
                     <a class="nav-link" href="{% url 'storage' %}">Lagerbestand</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="{% url 'login' %}">Einstellungen</a>
                 </li>
             </ul>
 

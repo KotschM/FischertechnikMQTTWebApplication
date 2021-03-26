@@ -1,4 +1,5 @@
 from django.urls import path
+
 from . import views
 
 urlpatterns = [
@@ -7,9 +8,8 @@ urlpatterns = [
     path('checkout/', views.checkout, name="checkout"),
     path('monitoring/', views.monitoring, name="monitoring"),
     path('storage/', views.storage, name="storage"),
-    path('setting/', views.setting, name="setting"),
+    path('user/login/setting/', views.setting, name="setting"),
     path('setting/sendToFactory/', views.sendToFactory, name="sentToFactory"),
     path('checkout/status/<str:customer_timestamp>/', views.status, name="status"),
-    path('update_item/', views.updateItem, name="update_item"),
     path('process_order/', views.processOrder, name="process_order"),
 ]

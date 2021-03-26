@@ -1,0 +1,15 @@
+{% extends 'factoryWebsite/main.html' %}
+{% block content %}
+
+<h2>Melden Sie sich als Admin an, um den Lagerbestand zu aktualisieren.</h2>
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">Login</button>
+</form>
+
+<script type="text/javascript">
+    document.getElementById('cart-symbol').classList.add("hidden");
+</script>
+
+{% endblock %}

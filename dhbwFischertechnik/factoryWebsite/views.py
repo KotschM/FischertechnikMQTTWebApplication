@@ -1,4 +1,3 @@
-import datetime
 import json
 
 from django.http import JsonResponse
@@ -56,32 +55,8 @@ def status(request, customer_timestamp):
 
 
 def sendToFactory(request):
-    mqttc.publish("Factory/Send/Storage", request.body, 0)
+    mqttc.publish(MQTT_Topic_Storage_Web, request.body, 2)
     return JsonResponse('Storage was updated', safe=False)
-
-
-def updateItem(request):
-    data = json.loads(request.body)
-    productId = data['productId']
-    action = data['action']
-
-    customer = request.user.customer
-    product = Product.objects.get(id=productId)
-    order, created = Order.objects.get_or_create(customer=customer, complete=False)
-
-    orderItem, created = OrderItem.objects.get_or_create(order=order, product=product)
-
-    if action == 'add':
-        orderItem.quantity = (orderItem.quantity + 1)
-    elif action == 'remove':
-        orderItem.quantity = (orderItem.quantity - 1)
-
-    orderItem.save()
-
-    if orderItem.quantity <= 0:
-        orderItem.delete()
-
-    return JsonResponse('Item was added', safe=False)
 
 
 def processOrder(request):
@@ -89,11 +64,7 @@ def processOrder(request):
     transaction_id = data['form']['timestamp']
     color = data['form']['color']
 
-    if request.user.is_authenticated:
-        customer = request.user.customer
-        order, created = Order.objects.get_or_create(customer=customer, complete=False)
-    else:
-        customer, order = guestOrder(request, data)
+    customer, order = guestOrder(request, data)
 
     total = float(data['form']['total'])
     order.transaction_id = transaction_id
@@ -103,7 +74,6 @@ def processOrder(request):
     order.save()
 
     orderJson = {"timestamp": transaction_id, "color": color}
-
-    mqttc.publish("Factory/Send/Order", str(orderJson), 2)
+    mqttc.publish(MQTT_Topic_Order, str(orderJson), 2)
 
     return JsonResponse('Payment complete!', safe=False)

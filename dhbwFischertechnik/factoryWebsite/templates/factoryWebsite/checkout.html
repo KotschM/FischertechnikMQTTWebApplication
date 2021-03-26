@@ -10,9 +10,6 @@
                     <div class="form-field">
                         <input required class="form-control" type="text" name="name" placeholder="Name...">
                     </div>
-                    <div class="form-field">
-                        <input required class="form-control" type="email" name="email" placeholder="Email...">
-                    </div>
                 </div>
                 <hr>
                 <input id="form-button" class="btn btn-success btn-block" type="submit" value="Bezahlen">
@@ -42,9 +39,6 @@
 
 <script type="text/javascript">
     var total = '{{ order.get_cart_total }}'
-    if (user !== 'AnonymousUser'){
-        document.getElementById('user-info').innerHTML = ''
-    }
 
     var form = document.getElementById('form')
 
@@ -61,33 +55,13 @@
         console.log('Payment button clicked')
         const timestamp = Date.now()
         var userFormData = {
-            'name':null,
-            'email':null,
+            'name':form.name.value,
             'total':total,
             'timestamp':timestamp,
             'color':cart['color']
         }
 
-        if (user === 'AnonymousUser'){
-            userFormData.name = form.name.value
-            userFormData.email = form.email.value
-        }
-
         console.log('User Info:', userFormData)
-
-        /*
-        var storageData = {
-            'storage0': document.getElementById('storage0').value,
-            'storage1': document.getElementById('storage1').value,
-            'storage2': document.getElementById('storage2').value,
-            'storage3': document.getElementById('storage3').value,
-            'storage4': document.getElementById('storage4').value,
-            'storage5': document.getElementById('storage5').value,
-            'storage6': document.getElementById('storage6').value,
-            'storage7': document.getElementById('storage7').value,
-            'storage8': document.getElementById('storage8').value,
-        }
-         */
 
         const url = "/process_order/";
         fetch(url, {

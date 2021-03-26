@@ -3,9 +3,8 @@ from django.contrib.auth.models import User
 
 
 class Customer(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True, blank=True)
-    name = models.CharField(max_length=200, null=True)
-    email = models.CharField(max_length=200)
+    name = models.CharField(max_length=200)
+    timestamp = models.BigIntegerField(null=True)
 
     def __str__(self):
         return self.name
@@ -30,7 +29,6 @@ class Product(models.Model):
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-    date_ordered = models.DateTimeField(auto_now_add=True)
     complete = models.BooleanField(default=False, null=True, blank=False)
     transaction_id = models.CharField(max_length=100, null=True)
 
@@ -62,25 +60,25 @@ class OrderItem(models.Model):
         return total
 
 
-class Storage(models.Model):
-    class BoxColors(models.TextChoices):
-        WHITE = 'W'
-        RED = 'R'
-        BLUE = 'B'
+# class Storage(models.Model):
+#     class BoxColors(models.TextChoices):
+#         WHITE = 'W'
+#         RED = 'R'
+#         BLUE = 'B'
+#
+#     class BoxStatus(models.TextChoices):
+#         EMPTY = 'E'
+#         EMPTYBOX = 'EB'
+#         FULL = 'F'
 
-    class BoxStatus(models.TextChoices):
-        EMPTY = 'E'
-        EMPTYBOX = 'EB'
-        FULL = 'F'
-
-    x = models.SmallIntegerField()
-    y = models.SmallIntegerField()
-    color = models.CharField(
-        max_length=1,
-        choices=BoxColors.choices,
-    )
-    status = models.CharField(
-        max_length=2,
-        choices=BoxStatus.choices,
-        default=BoxStatus.FULL,
-    )
+#     x = models.SmallIntegerField()
+#     y = models.SmallIntegerField()
+#     color = models.CharField(
+#         max_length=1,
+#         choices=BoxColors.choices,
+#     )
+#     status = models.CharField(
+#         max_length=2,
+#         choices=BoxStatus.choices,
+#         default=BoxStatus.FULL,
+#     )
