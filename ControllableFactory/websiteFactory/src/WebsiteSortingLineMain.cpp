@@ -29,14 +29,25 @@ Voltage motorVoltage = txt.voltage(5);
 SortingLineState colorDetectionUnit = SortingLineState::WAITING;
 SortingLineState sortingUnit = SortingLineState::WAITING;
 
+std::string user = "";
+std::string user_topic = "unknown";
+std::string MESSAGE_SCAN = "Die Farbe ihres Steines wird überprüft.";
+std::string MESSAGE_SORT = "Ihr Stein wurde eingelagert.";
+
 void SortWorkpiece(Color color);
 void ColorDetection();
+
+void topicCommand(const std::string &userid){
+    user = userid;
+    user_topic = "Status/" + user;
+}
 
 int main(void)
 {
     readConfig();
     mqttClient = new TxtMqttFactoryClient("SortingLine", ip_adress, "", "");
     mqttClient->connect(1000);
+    mqttClient->subTopicAsync("Factory/ProcessToSorting", topicCommand, 2);
 
     std::thread monitor = std::thread([] {
         while (true)
@@ -62,7 +73,6 @@ int main(void)
         else
         {
             belt.stop();
-            //mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_STATE, "bereit", 0, true);
         }
         sleep(50ms);
     }
@@ -75,6 +85,10 @@ void ColorDetection()
     while (true)
     {
         light_sensor_start.waitFor(DigitalState::LOW);
+
+        std::string StatusMessage = "{\"Text\":\"" + MESSAGE_SCAN + "\"}";
+        mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
         colorDetectionUnit = SortingLineState::WORKING;
 
         int min = color_sensor.value();
@@ -87,10 +101,8 @@ void ColorDetection()
             }
         }
 
-        //std::string message = "{\"Color\":\"" + std::to_string(min) + "\", \"Temperature\":\"" + std::to_string(motorTemperture.getTemperature()) + "\"}";
-           
-        //mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_LAST_COLOR, std::to_string(convertToColor(min, blue_lower, red_lower)));
-        //mqttClient->publishMessageAsync("Factory/Test", message);
+        StatusMessage = "{\"Text\":\"" + MESSAGE_SORT + "\"}";
+        mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
 
         std::thread sort = std::thread(SortWorkpiece, convertToColor(min, blue_lower, red_lower));
         sort.detach();
@@ -101,8 +113,7 @@ void ColorDetection()
 void SortWorkpiece(Color color)
 {
     sortingUnit = SortingLineState::WORKING;
-    //mqttClient->publishMessageAsync(TOPIC_INPUT_SORTINGLINE_STATE, "Werkstück sortieren", DFLT_QUALITY_OF_SERVICE, true);
-
+    
     comp.on();
     switch (color)
     {

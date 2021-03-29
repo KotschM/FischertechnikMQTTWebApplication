@@ -4,7 +4,7 @@
 #include "config.h"
 
 TXT txt;
-//TxtMqttFactoryClient* mqttClient;
+TxtMqttFactoryClient* mqttClient;
 
 TwoRefAxis oven = TwoRefAxis{txt, 5, 10, 9};
 TwoRefAxis vacuum_roboter = TwoRefAxis{txt, 6, 5, 11};
@@ -23,13 +23,25 @@ Output table_ventil = txt.output(7);
 DigitalInput oven_light_sensor = txt.digitalInput(13);
 DigitalInput belt_light_sensor = txt.digitalInput(4);
 
+std::string user = "";
+std::string user_topic = "unknown";
+std::string MESSAGE_ANALYSIS = "Ihr Stein wird überprüft.";
+std::string MESSAGE_SAW = "Ihr Stein wird bearbeitet.";
+std::string MESSAGE_END = "Ihr Stein ist fertig für die Ausgabe.";
+
 void ProcessWorkpiece();
+
+void topicCommand(const std::string &userid){
+    user = userid;
+    user_topic = "Status/" + user;
+}
 
 int main(void)
 {
     readConfig();
-    //mqttClient = new TxtMqttFactoryClient("ProcessingStation", ip_adress, "", "");
-    //mqttClient->connect(1000);
+    mqttClient = new TxtMqttFactoryClient("ProcessingStation", ip_adress, "", "");
+    mqttClient->connect(1000);
+    mqttClient->subTopicAsync("Factory/MainToProcess", topicCommand, 2);
 
     comp.on();
     oven_gate.on();
@@ -50,7 +62,7 @@ int main(void)
         ProcessWorkpiece();
     }
 
-    //delete mqttClient;
+    delete mqttClient;
     return 0;
 }
 
@@ -60,6 +72,10 @@ void ProcessWorkpiece()
     comp.on();
     sleep(2s);
     std::thread thread2 = vacuum_roboter.pos2Async();
+
+    std::string StatusMessage = "{\"Text\":\"" + MESSAGE_ANALYSIS + "\"}";
+    mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
     oven_gate.on();
     oven.pos2();
     oven_gate.off();
@@ -92,6 +108,10 @@ void ProcessWorkpiece()
     ventil_roboter.off();
     sleep(100ms);
     table.pos(1);
+
+    StatusMessage = "{\"Text\":\"" + MESSAGE_SAW + "\"}";
+    mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
     saw.right(OUTPUT_MAX_LEVEL);
     sleep(3s);
     saw.stop();
@@ -105,7 +125,12 @@ void ProcessWorkpiece()
     std::thread table_thread = table.posAsync(0);
     table_thread.detach();
 
+    StatusMessage = "{\"Text\":\"" + MESSAGE_END + "\"}";
+    mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
+    mqttClient->publishMessageAsync("Factory/ProcessToSorting", user, 2);
+
     belt_light_sensor.waitFor(DigitalState::LOW);
-    sleep(5s);
+    sleep(3s);
     belt.stop();
 }
