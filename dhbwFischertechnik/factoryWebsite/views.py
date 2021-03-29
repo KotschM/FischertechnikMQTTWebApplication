@@ -66,14 +66,11 @@ def processOrder(request):
 
     customer, order = guestOrder(request, data)
 
-    total = float(data['form']['total'])
     order.transaction_id = transaction_id
-
-    if total == float(order.get_cart_total):
-        order.complete = True
+    order.color = color
     order.save()
 
-    orderJson = {"timestamp": transaction_id, "color": color}
-    mqttc.publish(MQTT_Topic_Order, str(orderJson), 2)
+    # orderJson = {"timestamp": transaction_id, "color": color}
+    # mqttc.publish(MQTT_Topic_Order, str(orderJson), 2)
 
     return JsonResponse('Payment complete!', safe=False)

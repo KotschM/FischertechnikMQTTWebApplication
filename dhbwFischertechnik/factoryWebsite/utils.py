@@ -61,7 +61,8 @@ def guestOrder(request, data):
 
     order = Order.objects.create(
         customer=customer,
-        complete=False,
+        finished=False,
+        sendToFactory=False
     )
 
     for item in items:

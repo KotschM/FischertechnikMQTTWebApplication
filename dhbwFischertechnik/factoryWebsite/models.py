@@ -29,7 +29,9 @@ class Product(models.Model):
 
 class Order(models.Model):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, blank=True)
-    complete = models.BooleanField(default=False, null=True, blank=False)
+    sendToFactory = models.BooleanField(default=False, null=True, blank=False)
+    finished = models.BooleanField(default=False, null=True, blank=False)
+    color = models.CharField(max_length=100, null=True)
     transaction_id = models.CharField(max_length=100, null=True)
 
     def __str__(self):

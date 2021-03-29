@@ -2,6 +2,8 @@ import json
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from factoryWebsite.models import Order
+from .mqtt import *
 
 monitorMainUnit = False
 temperatureMainUnit = ""
@@ -82,8 +84,33 @@ def Storage_Data_Handler(data):
     )
 
 
+def Order_Ready_Data_Handler(data):
+    json_Dict = json.loads(data)
+    last_id = json_Dict['LastId']
+    status = json_Dict['Status']
+    if status == "True":
+        product = Order.objects.get(transaction_id=last_id)
+        product.finished = True
+        product.save()
+
+        productList = Order.objects.filter(sendToFactory=False)
+        nextProduct = productList.order_by('transaction_id').first()
+        nextProduct.sendToFactory = True
+        orderJson = {"timestamp": nextProduct.transaction_id, "color": nextProduct.color}
+        nextProduct.save()
+
+        mqttc.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
+
+
 def topic_Data_Handler_QoS_0(topic, data):
     if topic.startswith("Monitor"):
         Monitoring_Data_Handler(topic, data)
     elif topic == "Storage/Factory":
         Storage_Data_Handler(data)
+
+
+def topic_Data_Handler_QoS_2(topic, data):
+    if topic.startswith("Status"):
+        Status_Data_Handler(topic, data)
+    elif topic == "Order/Ready":
+        Order_Ready_Data_Handler(data)

@@ -54,12 +54,12 @@
     function submitFormData(){
         console.log('Payment button clicked')
         const timestamp = Date.now()
-        var userFormData = {
-            'name':form.name.value,
-            'total':total,
-            'timestamp':timestamp,
-            'color':cart['color']
-        }
+        const userFormData = {
+            'name': form.name.value,
+            'total': total,
+            'timestamp': timestamp,
+            'color': cart['color']
+        };
 
         console.log('User Info:', userFormData)
 
