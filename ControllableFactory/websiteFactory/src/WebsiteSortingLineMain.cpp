@@ -29,7 +29,7 @@ Voltage motorVoltage = txt.voltage(5);
 SortingLineState colorDetectionUnit = SortingLineState::WAITING;
 SortingLineState sortingUnit = SortingLineState::WAITING;
 
-std::string user = "";
+std::string order = "";
 std::string user_topic = "unknown";
 std::string MESSAGE_SCAN = "Die Farbe ihres Steines wird überprüft.";
 std::string MESSAGE_SORT = "Ihr Stein wurde eingelagert.";
@@ -37,9 +37,9 @@ std::string MESSAGE_SORT = "Ihr Stein wurde eingelagert.";
 void SortWorkpiece(Color color);
 void ColorDetection();
 
-void topicCommand(const std::string &userid){
-    user = userid;
-    user_topic = "Status/" + user;
+void topicCommand(const std::string &orderid){
+    order = orderid;
+    user_topic = "Status/" + order;
 }
 
 int main(void)
@@ -56,7 +56,7 @@ int main(void)
                                     + "\", \"Temperature\":\"" + std::to_string(motorTemperture.getTemperature()) 
                                     + "\", \"Voltage\":\"" + std::to_string(motorVoltage.value()) 
                                     + "\"}";
-            mqttClient->publishMessageAsync("Factory/Get/Monitoring/SortingLine", message, 0);
+            mqttClient->publishMessageAsync("Monitor/SortingLine", message, 0);
             sleep(1000ms);
         }
     });
@@ -103,6 +103,8 @@ void ColorDetection()
 
         StatusMessage = "{\"Text\":\"" + MESSAGE_SORT + "\"}";
         mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
+        mqttClient->publishMessageAsync("Factory/SortingToMain", order, 2);
 
         std::thread sort = std::thread(SortWorkpiece, convertToColor(min, blue_lower, red_lower));
         sort.detach();

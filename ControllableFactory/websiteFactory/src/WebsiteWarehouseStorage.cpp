@@ -96,3 +96,43 @@ void FileStorage::setNewStorage(std::string storageString)
     file.write(c, STORAGE_SIZE);
     file.close();
 }
+
+int FileStorage::getQuantityOf(Color color){
+    int quantity = 0;
+    switch (color)
+    {
+    case Color::WHITE:
+        for (int i = 0; i < STORAGE_SIZE; i++)
+        {
+            if (values[i] == WarehouseContent::WHITE)
+            {
+                quantity++;
+            }
+        }
+        break;
+
+    case Color::RED:
+        for (int i = 0; i < STORAGE_SIZE; i++)
+        {
+            if (values[i] == WarehouseContent::RED)
+            {
+                quantity++;
+            }
+        }
+        break;
+
+    case Color::BLUE:
+        for (int i = 0; i < STORAGE_SIZE; i++)
+        {
+            if (values[i] == WarehouseContent::BLUE)
+            {
+                quantity++;
+            }
+        }
+        break;
+    default:
+        break;
+    }
+    
+    return quantity;
+}

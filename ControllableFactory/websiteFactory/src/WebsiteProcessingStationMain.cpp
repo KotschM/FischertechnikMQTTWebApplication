@@ -23,7 +23,7 @@ Output table_ventil = txt.output(7);
 DigitalInput oven_light_sensor = txt.digitalInput(13);
 DigitalInput belt_light_sensor = txt.digitalInput(4);
 
-std::string user = "";
+std::string order = "";
 std::string user_topic = "unknown";
 std::string MESSAGE_ANALYSIS = "Ihr Stein wird überprüft.";
 std::string MESSAGE_SAW = "Ihr Stein wird bearbeitet.";
@@ -31,9 +31,9 @@ std::string MESSAGE_END = "Ihr Stein ist fertig für die Ausgabe.";
 
 void ProcessWorkpiece();
 
-void topicCommand(const std::string &userid){
-    user = userid;
-    user_topic = "Status/" + user;
+void topicCommand(const std::string &orderid){
+    order = orderid;
+    user_topic = "Status/" + order;
 }
 
 int main(void)
@@ -128,7 +128,7 @@ void ProcessWorkpiece()
     StatusMessage = "{\"Text\":\"" + MESSAGE_END + "\"}";
     mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
 
-    mqttClient->publishMessageAsync("Factory/ProcessToSorting", user, 2);
+    mqttClient->publishMessageAsync("Factory/ProcessToSorting", order, 2);
 
     belt_light_sensor.waitFor(DigitalState::LOW);
     sleep(3s);

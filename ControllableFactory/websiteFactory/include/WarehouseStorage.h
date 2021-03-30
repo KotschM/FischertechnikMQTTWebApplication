@@ -25,6 +25,7 @@ public:
     virtual int getPositionOf(WarehouseContent) = 0;
     virtual std::string getAsJson() = 0;
     virtual void setNewStorage(std::string) = 0;
+    virtual int getQuantityOf(Color) = 0;
 };
 
 class FileStorage : public IStorage
@@ -38,6 +39,7 @@ public:
     int getPositionOf(WarehouseContent) override;
     std::string getAsJson() override;
     void setNewStorage(std::string) override;
+    int getQuantityOf(Color) override;
 };
 
 #endif
