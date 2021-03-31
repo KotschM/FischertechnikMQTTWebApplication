@@ -4,26 +4,7 @@
 <h1>Status der Bestellung</h1>
     <label for="chat-log"></label><textarea id="chat-log" cols="100" rows="20"></textarea><br>
 {{ customer_timestamp|json_script:"customer_timestamp" }}
-<script type="text/javascript">
-    document.getElementById('cart-symbol').classList.add("hidden");
 
-    const customer_timestamp = JSON.parse(document.getElementById('customer_timestamp').textContent);
+<script type="text/javascript" src="{% static 'js/status.js' %}"></script>
 
-    const chatSocket = new WebSocket(
-        'ws://'
-        + window.location.host
-        + '/ws/status/'
-        + customer_timestamp
-        + '/'
-    );
-
-    chatSocket.onmessage = function(e) {
-        const data = JSON.parse(e.data);
-        document.querySelector('#chat-log').value += (data.message + '\n');
-    };
-
-    chatSocket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-</script>
 {% endblock content %}

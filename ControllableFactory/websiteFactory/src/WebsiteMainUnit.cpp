@@ -254,7 +254,6 @@ void storeWorkpieceHighBay(uint8_t x, uint8_t y, WarehouseContent content)
     warehouse.drive(x, y);
     warehouse.put();
     warehouse.storage.setWorkpieceAt(y * 3 + x, content);
-
     warehouse.state = HighBayState::H_READY;
 }
 
@@ -285,7 +284,8 @@ void getWorkpieceHighBay(uint8_t x, uint8_t y)
     warehouse.state = HighBayState::H_PROVIDE_WORKPIECE;
     warehouse.drive(x, y);
     warehouse.pull();
-    warehouse.storage.setWorkpieceAt(y * 3 + x, WarehouseContent::NO_BOX);warehouse.drive(3, 3);
+    warehouse.storage.setWorkpieceAt(y * 3 + x, WarehouseContent::NO_BOX);
+    warehouse.drive(3, 3);
     warehouse.put(true);
     warehouse.state = HighBayState::H_READY;
 }

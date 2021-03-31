@@ -89,15 +89,15 @@ def Order_Ready_Data_Handler(data):
     last_id = json_Dict['LastId']
     status = json_Dict['Status']
     if status == "True":
-        product = Order.objects.get(transaction_id=last_id)
-        product.finished = True
-        product.save()
+        recentOrder = Order.objects.get(transaction_id=last_id)
+        recentOrder.finished = True
+        recentOrder.save()
 
-        productList = Order.objects.filter(sendToFactory=False)
-        nextProduct = productList.order_by('transaction_id').first()
-        nextProduct.sendToFactory = True
-        orderJson = {"timestamp": nextProduct.transaction_id, "color": nextProduct.color}
-        nextProduct.save()
+        nextOrderList = Order.objects.filter(sendToFactory=False)
+        nextOrder = nextOrderList.order_by('transaction_id').first()
+        nextOrder.sendToFactory = True
+        orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
+        nextOrder.save()
 
         mqttc.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
 
