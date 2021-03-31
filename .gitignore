@@ -38,6 +38,5 @@ obj/
 -p/
 .vscode/settings.json
 deps/
-FactoryLib/
 __pycache__/
 *.pyc

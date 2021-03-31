@@ -103,9 +103,6 @@ int main()
     thread_vacuum.join();
     thread_warehouse.join();
 
-    //std::thread run = std::thread(checkAvailableWorkpieces);
-    //run.detach();
-
     std::thread run = std::thread(processOrder);
     run.detach();
 
@@ -292,6 +289,7 @@ void getWorkpieceHighBay(uint8_t x, uint8_t y)
 
 void getFullBox()
 {
+    /*
     int x = 0;
     int y = 0;
     for (int i = 0; i < STORAGE_SIZE; i++)
@@ -302,6 +300,20 @@ void getFullBox()
             y = i / 3;
             break;
         }
+    }
+    getWorkpieceHighBay(x, y);
+    */
+    int x = 0;
+    int y = 0;
+    for (int i = 0; i < STORAGE_SIZE; i++)
+    {
+        if ((int)orderColor == (int)warehouse.storage.getWorkpieceAt(i))
+        {
+            x = i % 3;
+            y = i / 3;
+            break;
+        }
+        
     }
     getWorkpieceHighBay(x, y);
 }
