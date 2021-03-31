@@ -35,6 +35,9 @@ BeltState beltstate = BeltState::WAREHOUSE;
 std::string order = "";
 std::string user_topic = "unknown";
 Color orderColor;
+bool orderFlag = false;
+std::string MESSAGE_GETWORKPIECE = "Ihr Stein wird aus dem Hochregallager entnommen.";
+std::string MESSAGE_CRANE = "Ihr Stein wird mit dem Kran zur Weiterverarbeitung geschickt.";
 
 void checkAvailableWorkpieceOfColor();
 void processOrder();
@@ -44,7 +47,6 @@ void driveToWarehouse(Color);
 void driveToProcessing();
 void storeWorkpieceHighBay(uint8_t, uint8_t, int);
 void getWorkpieceHighBay(uint8_t, uint8_t);
-void checkAvailableWorkpieces();
 void getEmptyBox(Color);
 void storeBox(WarehouseContent);
 void getFullBox();
@@ -55,11 +57,6 @@ void mqttNewStorageFromWeb(const std::string &message){
     warehouse.storage.setNewStorage(message);
 }
 
-void mqttOrderIsSorted(const std::string &orderid){
-    order = orderid;
-    user_topic = "Status/" + order;
-}
-
 void mqttNewOrder(const std::string &jsonOrderIdAndColor){
     const auto rawJsonLength = static_cast<int>(jsonOrderIdAndColor.length());
     JSONCPP_STRING err;
@@ -68,7 +65,7 @@ void mqttNewOrder(const std::string &jsonOrderIdAndColor){
     const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
     if (!reader->parse(jsonOrderIdAndColor.c_str(), jsonOrderIdAndColor.c_str() + rawJsonLength, &root,
                        &err)) {
-      return;
+        return;
     }
     order = root["orderid"].asString();
     std::string color = root["color"].asString();
@@ -86,6 +83,7 @@ void mqttNewOrder(const std::string &jsonOrderIdAndColor){
     default:
         break;
     }
+    orderFlag = true;
 }
 
 int main()
@@ -95,7 +93,6 @@ int main()
     mqttClient->connect(1000);
     mqttClient->subTopicAsync("Storage/Web", mqttNewStorageFromWeb, 2);
     mqttClient->subTopicAsync("Order/Send", mqttNewOrder, 2);
-    mqttClient->subTopicAsync("Factory/SortingToMain", mqttOrderIsSorted, 2);
 
     std::thread thread_vacuum = robot.referenceAsync();
     std::thread thread_warehouse = warehouse.referenceAsync();
@@ -124,11 +121,15 @@ int main()
 }
 
 void processOrder(){
-    if (warehouse.storage.getQuantityOf(orderColor) == 0)
+    if (orderFlag)
     {
-        checkAvailableWorkpieceOfColor();
+        if (warehouse.storage.getQuantityOf(orderColor) == 0)
+        {
+            checkAvailableWorkpieceOfColor();
+        }
+        getWorkpieceWithColor();
+        orderFlag = false;
     }
-    getWorkpieceWithColor();
 }
 
 void checkAvailableWorkpieceOfColor(){
@@ -184,7 +185,6 @@ void checkAvailableWorkpieceOfColor(){
 }
 
 void getWorkpieceWithColor(){
-    //Logic
     getFullBox();
     driveBeltTo(BeltState::VACUUM_ROBOT);
     std::thread processing = std::thread(driveToProcessing);
@@ -233,6 +233,9 @@ void driveToProcessing()
     std::thread beltState = driveBeltToAsync(BeltState::WAREHOUSE);
     robot.zaxis.moveAbsolut(0);
     robot.xaxis.moveAbsolut(PROCESS_STATION_X);
+
+    mqttClient->publishMessageAsync("Factory/MainToProcess", order, 2);
+    
     robot.drive(PROCESS_STATION_X, PROCESS_STATION_Y, PROCESS_STATION_Z); 
     robot.release();
     std::thread xaxis = robot.yaxis.moveAbsolutAsync(0);
@@ -289,20 +292,6 @@ void getWorkpieceHighBay(uint8_t x, uint8_t y)
 
 void getFullBox()
 {
-    /*
-    int x = 0;
-    int y = 0;
-    for (int i = 0; i < STORAGE_SIZE; i++)
-    {
-        if ((int)warehouse.storage.getWorkpieceAt(i) > 0)
-        {
-            x = i % 3;
-            y = i / 3;
-            break;
-        }
-    }
-    getWorkpieceHighBay(x, y);
-    */
     int x = 0;
     int y = 0;
     for (int i = 0; i < STORAGE_SIZE; i++)
@@ -313,7 +302,6 @@ void getFullBox()
             y = i / 3;
             break;
         }
-        
     }
     getWorkpieceHighBay(x, y);
 }

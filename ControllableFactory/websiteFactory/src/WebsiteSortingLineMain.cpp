@@ -104,7 +104,8 @@ void ColorDetection()
         StatusMessage = "{\"Text\":\"" + MESSAGE_SORT + "\"}";
         mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
 
-        mqttClient->publishMessageAsync("Factory/SortingToMain", order, 2);
+        std::string message = "{\"LastId\":\"" + order + "\"}";
+        mqttClient->publishMessageAsync("Order/Ready", message, 2);
 
         std::thread sort = std::thread(SortWorkpiece, convertToColor(min, blue_lower, red_lower));
         sort.detach();
