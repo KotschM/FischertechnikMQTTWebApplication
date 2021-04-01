@@ -1,4 +1,4 @@
-var total = '{{ order.get_cart_total }}'
+const total = '{{ order.get_cart_total }}'
 
 var form = document.getElementById('form')
 

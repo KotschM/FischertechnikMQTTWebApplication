@@ -82,6 +82,7 @@ def guestOrder(request, data):
 
 def sendNewOrderToFactory(fromFactory):
     global factoryIsWorking
+
     if fromFactory:
         factoryIsWorking = False
 
@@ -89,17 +90,14 @@ def sendNewOrderToFactory(fromFactory):
     try:
         if not factoryIsWorking:
             nextOrderList = Order.objects.filter(sendToFactory=False)
-            nextOrder = nextOrderList.order_by('transaction_id').first()
-            nextOrder.sendToFactory = True
-            orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
-            nextOrder.save()
+            if nextOrderList.exists():
+                nextOrder = nextOrderList.order_by('transaction_id').first()
+                nextOrder.sendToFactory = True
+                orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
+                nextOrder.save()
 
-            mqttc.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
+                mqttc.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
 
-            factoryIsWorking = True
+                factoryIsWorking = True
     finally:
         lock.release()
-
-
-def sendNexOrderToFactory():
-    pass

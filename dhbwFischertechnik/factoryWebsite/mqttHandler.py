@@ -89,7 +89,7 @@ def Order_Ready_Data_Handler(data):
     last_id = json_Dict['LastId']
 
     recentOrder = Order.objects.get(transaction_id=last_id)
-    recentOrder.finished = True
+    # recentOrder.finished = True
     # recentOrder.save()
     recentOrder.delete()
 
