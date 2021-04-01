@@ -4,7 +4,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from .models import *
-from .utils import cartData, guestOrder
+from .utils import cartData, guestOrder, sendNewOrderToFactory
 from .mqtt import *
 
 
@@ -70,7 +70,6 @@ def processOrder(request):
     order.color = color
     order.save()
 
-    # orderJson = {"timestamp": transaction_id, "color": color}
-    # mqttc.publish(MQTT_Topic_Order, str(orderJson), 2)
+    sendNewOrderToFactory(False)
 
     return JsonResponse('Payment complete!', safe=False)

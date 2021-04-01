@@ -27,12 +27,12 @@
             <div class="cart-row">
                 <div style="flex: 2"><img class="row-image" src="{{item.product.imageUrl}}" alt="product_image"></div>
                 <div style="flex: 2"><p>{{ item.product.name}}</p></div>
-                <div style="flex: 2"><p>${{ item.product.price|floatformat:2}}</p></div>
+                <div style="flex: 2"><p>{{ item.product.price|floatformat:2}} €</p></div>
                 <div style="flex: 2"><p>x{{ item.quantity}}</p></div>
             </div>
             {% endfor %}
             <h5>Items: {{ order.get_cart_items }}</h5>
-            <h5>Total: ${{ order.get_cart_total|floatformat:2 }}</h5>
+            <h5>Total: {{ order.get_cart_total|floatformat:2 }} €</h5>
         </div>
     </div>
 </div>

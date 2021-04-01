@@ -26,7 +26,6 @@ function addCookieItem(productId, action){
         }else {
             alert("Es darf sich nur ein Stein im Warenkorb befinden! \nBitte gehen Sie in den Warenkorb um einen Stein zu" +
                 " entfernen.")
-            // cart[productId]['quantity'] += 1
         }
     }
     if (action === 'remove'){

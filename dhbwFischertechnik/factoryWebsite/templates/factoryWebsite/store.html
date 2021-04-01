@@ -11,7 +11,7 @@
                 <button data-product={{product.id}} data-action="add" class="btn btn-outline-secondary add-btn
                 update-cart">Zum Warenkorb hinzufügen</button>
                 <h4 style="display: inline-block; float: right"><strong>
-                    ${{ product.price|floatformat:2 }}</strong></h4>
+                    {{ product.price|floatformat:2 }} €</strong></h4>
             </div>
         </div>
         {% endfor %}

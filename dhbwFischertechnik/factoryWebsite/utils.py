@@ -1,5 +1,10 @@
 import json
 from .models import *
+from .mqtt import *
+from threading import Lock
+lock = Lock()
+
+factoryIsWorking = False
 
 
 def cookieCart(request):
@@ -73,3 +78,28 @@ def guestOrder(request, data):
             quantity=item['quantity']
         )
     return customer, order
+
+
+def sendNewOrderToFactory(fromFactory):
+    global factoryIsWorking
+    if fromFactory:
+        factoryIsWorking = False
+
+    lock.acquire()
+    try:
+        if not factoryIsWorking:
+            nextOrderList = Order.objects.filter(sendToFactory=False)
+            nextOrder = nextOrderList.order_by('transaction_id').first()
+            nextOrder.sendToFactory = True
+            orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
+            nextOrder.save()
+
+            mqttc.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
+
+            factoryIsWorking = True
+    finally:
+        lock.release()
+
+
+def sendNexOrderToFactory():
+    pass

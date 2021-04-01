@@ -12,7 +12,7 @@
                             <h5>Anzahl: <strong>{{ order.get_cart_items }}</strong></h5>
                         </th>
                         <th>
-                            <h5>Gesamtsumme: <strong>${{ order.get_cart_total|floatformat:2 }}</strong></h5>
+                            <h5>Gesamtsumme: <strong>{{ order.get_cart_total|floatformat:2 }} €</strong></h5>
                         </th>
                         <th>
                             <a style="float: right; margin: 5px" class="btn btn-success" href=
@@ -29,23 +29,19 @@
                     <div style="flex: 1"><strong>Preis</strong></div>
                     <div style="flex: 1"><strong>Anzahl</strong></div>
                     <div style="flex: 1"><strong>Summe</strong></div>
+                    <div style="flex: 1"></div>
                 </div>
                 {% for item in items %}
                 <div class="cart-row">
                     <div style="flex: 2"><img class="row-image" src="{{ item.product.imageUrl }}" alt="product_image"></div>
                     <div style="flex: 2">{{ item.product.name }}</div>
-                    <div style="flex: 1">${{ item.product.price|floatformat:2 }}</div>
+                    <div style="flex: 1">{{ item.product.price|floatformat:2 }} €</div>
+                    <div style="flex: 1"><p class="quantity">{{ item.quantity }}<p></div>
+                    <div style="flex: 1">{{ item.get_total|floatformat:2 }} €</div>
                     <div style="flex: 1">
-                        <p class="quantity">{{ item.quantity }}<p>
-                        <div class="quantity">
-                            <img data-product="{{ item.product.id }}" data-action="add" class="chg-quantity
-                                update-cart" src="{% static 'images/arrow-up.png' %}" alt="arrow_up_image">
-
-                            <img data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity
-                                update-cart" src="{% static 'images/arrow-down.png' %}" alt="arrow_down_image">
-                        </div>
+                        <img data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity
+                                update-cart" src="{% static 'images/trash.png' %}" alt="arrow_down_image">
                     </div>
-                    <div style="flex: 1">${{ item.get_total|floatformat:2 }}</div>
                 </div>
                 {% endfor %}
             </div>
