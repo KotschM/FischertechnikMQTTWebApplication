@@ -3,7 +3,7 @@ import json
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from factoryWebsite.models import Order
-from .utils import sendNewOrderToFactory
+from factoryWebsite.utils import sendNewOrderToFactory
 
 monitorMainUnit = False
 temperatureMainUnit = ""
@@ -46,7 +46,7 @@ def Monitoring_Data_Handler(topic, data):
         voltageSortingLine = json_Dict['Voltage']
         monitorSortingLine = True
 
-    if monitorMainUnit == True and monitorSortingLine == True:
+    if monitorMainUnit and monitorSortingLine:
         monitorMainUnit = False
         monitorSortingLine = False
         channel_layer = get_channel_layer()

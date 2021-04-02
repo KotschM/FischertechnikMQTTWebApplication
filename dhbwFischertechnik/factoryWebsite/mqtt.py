@@ -7,7 +7,6 @@ Keep_Alive_Interval = 60
 MQTT_Topic_Monitor = "Monitor/#"
 MQTT_Topic_Storage_Factory = "Storage/Factory"
 MQTT_Topic_Storage_Web = "Storage/Web"
-MQTT_Topic_Order_Send = "Order/Send"
 MQTT_Topic_Order_Ready = "Order/Ready"
 MQTT_Topic_Status = "Status/#"
 

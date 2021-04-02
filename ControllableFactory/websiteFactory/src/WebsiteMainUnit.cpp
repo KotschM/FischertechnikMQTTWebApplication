@@ -100,8 +100,14 @@ int main()
     thread_vacuum.join();
     thread_warehouse.join();
 
-    std::thread run = std::thread(processOrder);
+    /*std::thread run = std::thread([] {
+        while (true)
+        {
+            processOrder();
+        }
+    });
     run.detach();
+    */
 
     std::thread monitor = std::thread([] {
         while (true)
@@ -115,6 +121,11 @@ int main()
         }
     });
     monitor.detach();
+
+    while (true)
+    {
+        processOrder();
+    }
 
     delete mqttClient;
     return 0;

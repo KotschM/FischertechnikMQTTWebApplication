@@ -4,8 +4,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from .models import *
+from .mqtt import mqttc, MQTT_Topic_Storage_Web
 from .utils import cartData, guestOrder, sendNewOrderToFactory
-from .mqtt import *
 
 
 def store(request):
@@ -54,7 +54,7 @@ def status(request, customer_timestamp):
     })
 
 
-def sendToFactory(request):
+def sendStorageToFactory(request):
     mqttc.publish(MQTT_Topic_Storage_Web, request.body, 2)
     return JsonResponse('Storage was updated', safe=False)
 

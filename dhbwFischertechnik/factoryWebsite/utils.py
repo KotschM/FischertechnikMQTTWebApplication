@@ -1,7 +1,9 @@
 import json
-from .models import *
-from .mqtt import *
 from threading import Lock
+
+from .models import *
+from .mqttOrder import mqttcOrder, MQTT_Topic_Order_Send
+
 lock = Lock()
 
 factoryIsWorking = False
@@ -59,9 +61,11 @@ def guestOrder(request, data):
     items = cookieData['items']
 
     customer, created = Customer.objects.get_or_create(
-        name=name,
+        timestamp=timestamp,
+        # name=name,
     )
-    customer.timestamp = timestamp
+    # customer.timestamp = timestamp
+    customer.name = name
     customer.save()
 
     order = Order.objects.create(
@@ -95,8 +99,8 @@ def sendNewOrderToFactory(fromFactory):
                 nextOrder.sendToFactory = True
                 orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
                 nextOrder.save()
-
-                mqttc.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
+                print("Vor Publish")
+                mqttcOrder.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
 
                 factoryIsWorking = True
     finally:
