@@ -11,9 +11,9 @@ using namespace std::chrono;
 
 enum Color
 {
-    WHITE = 1,
-    RED = 2,
-    BLUE = 3
+    WHITE = 0,
+    RED = 1,
+    BLUE = 2
 };
 
 void sleep(std::chrono::microseconds);

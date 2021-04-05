@@ -88,7 +88,7 @@ void ColorDetection()
 
         std::string StatusMessage = "{\"Text\":\"" + MESSAGE_SCAN + "\"}";
         mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
-
+        
         colorDetectionUnit = SortingLineState::WORKING;
 
         int min = color_sensor.value();

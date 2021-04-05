@@ -54,10 +54,12 @@ void driveBeltTo(BeltState);
 std::thread driveBeltToAsync(BeltState);
 
 void mqttNewStorageFromWeb(const std::string &message){
+    mqttClient->publishMessageAsync("Test", message);
     warehouse.storage.setNewStorage(message);
 }
 
 void mqttNewOrder(const std::string &jsonOrderIdAndColor){
+    mqttClient->publishMessageAsync("Test", "Get Order");
     const auto rawJsonLength = static_cast<int>(jsonOrderIdAndColor.length());
     JSONCPP_STRING err;
     Json::Value root;
@@ -92,13 +94,24 @@ int main()
     mqttClient = new TxtMqttFactoryClient("MainUnit", ip_adress, "", "");
     mqttClient->connect(1000);
     mqttClient->subTopicAsync("Storage/Web", mqttNewStorageFromWeb, 2);
-    mqttClient->subTopicAsync("Order/Send", mqttNewOrder, 2);
+    mqttClient->publishMessageAsync("Test", "Get Order");
+    //mqttClient->subTopicAsync("Order/Send", mqttNewOrder, 2);
 
     std::thread thread_vacuum = robot.referenceAsync();
     std::thread thread_warehouse = warehouse.referenceAsync();
 
     thread_vacuum.join();
     thread_warehouse.join();
+
+    if (DEBUG_MAINUNIT) {
+        std::thread([]() {
+            while (true)
+            {
+                mqttClient->publishMessageAsync("Test", txtStateObject(txt));
+                sleep(250ms);
+            }
+        }).detach();
+    }
 
     /*std::thread run = std::thread([] {
         while (true)
@@ -132,6 +145,7 @@ int main()
 }
 
 void processOrder(){
+    //mqttClient->publishMessageAsync("Test", orderFlag ? "true" : "false");
     if (orderFlag)
     {
         if (warehouse.storage.getQuantityOf(orderColor) == 0)
