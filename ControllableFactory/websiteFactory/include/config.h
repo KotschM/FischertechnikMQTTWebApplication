@@ -6,8 +6,8 @@
 #include <string>
 
 std::string ip_adress = "192.168.178.100";
-int red_lower = 1600;
-int blue_lower = 1200;
+int red_lower = 1200;
+int blue_lower = 1600;
 
 void readConfig(){
     Json::Value root;

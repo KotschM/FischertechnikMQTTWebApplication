@@ -97,10 +97,11 @@ def sendNewOrderToFactory(fromFactory):
             if nextOrderList.exists():
                 nextOrder = nextOrderList.order_by('transaction_id').first()
                 nextOrder.sendToFactory = True
-                orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
+                messageString = nextOrder.color + nextOrder.transaction_id
+                # orderJson = {"orderid": nextOrder.transaction_id, "color": nextOrder.color}
                 nextOrder.save()
-                print("Vor Publish")
-                mqttcOrder.publish(MQTT_Topic_Order_Send, str(orderJson), 2)
+                print("Vor Publish => " + messageString)
+                mqttcOrder.publish(MQTT_Topic_Order_Send, str(messageString), 2)
 
                 factoryIsWorking = True
     finally:

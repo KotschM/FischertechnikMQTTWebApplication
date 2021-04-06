@@ -38,7 +38,7 @@ def on_publish(client, userdata, result):
     print("data published")
 
 
-mqttc = mqtt.Client()
+mqttc = mqtt.Client("Monitoring")
 
 mqttc.on_message = on_message
 mqttc.on_connect = on_connect

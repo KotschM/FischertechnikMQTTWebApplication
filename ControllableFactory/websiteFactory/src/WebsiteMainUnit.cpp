@@ -34,7 +34,9 @@ BeltState beltstate = BeltState::WAREHOUSE;
 
 std::string order = "";
 std::string user_topic = "unknown";
+std::string mqttstring = "";
 Color orderColor;
+int colorId = 0;
 bool orderFlag = false;
 std::string MESSAGE_GETWORKPIECE = "Ihr Stein wird aus dem Hochregallager entnommen.";
 std::string MESSAGE_CRANE = "Ihr Stein wird mit dem Kran zur Weiterverarbeitung geschickt.";
@@ -54,24 +56,15 @@ void driveBeltTo(BeltState);
 std::thread driveBeltToAsync(BeltState);
 
 void mqttNewStorageFromWeb(const std::string &message){
-    mqttClient->publishMessageAsync("Test", message);
     warehouse.storage.setNewStorage(message);
 }
 
 void mqttNewOrder(const std::string &jsonOrderIdAndColor){
-    mqttClient->publishMessageAsync("Test", "Get Order");
-    const auto rawJsonLength = static_cast<int>(jsonOrderIdAndColor.length());
-    JSONCPP_STRING err;
-    Json::Value root;
-    Json::CharReaderBuilder builder;
-    const std::unique_ptr<Json::CharReader> reader(builder.newCharReader());
-    if (!reader->parse(jsonOrderIdAndColor.c_str(), jsonOrderIdAndColor.c_str() + rawJsonLength, &root,
-                       &err)) {
-        return;
-    }
-    order = root["orderid"].asString();
-    std::string color = root["color"].asString();
-    int colorId = std::stoi(color);
+    mqttstring = jsonOrderIdAndColor;
+    colorId = jsonOrderIdAndColor[0] - '0';
+    order = jsonOrderIdAndColor.substr(1, jsonOrderIdAndColor.size());
+    user_topic = "Status/" + order;
+
     switch (colorId){
     case 1:
         orderColor = Color::WHITE;
@@ -94,33 +87,13 @@ int main()
     mqttClient = new TxtMqttFactoryClient("MainUnit", ip_adress, "", "");
     mqttClient->connect(1000);
     mqttClient->subTopicAsync("Storage/Web", mqttNewStorageFromWeb, 2);
-    mqttClient->publishMessageAsync("Test", "Get Order");
-    //mqttClient->subTopicAsync("Order/Send", mqttNewOrder, 2);
+    mqttClient->subTopicAsync("Order/Send", mqttNewOrder, 2);
 
     std::thread thread_vacuum = robot.referenceAsync();
     std::thread thread_warehouse = warehouse.referenceAsync();
 
     thread_vacuum.join();
     thread_warehouse.join();
-
-    if (DEBUG_MAINUNIT) {
-        std::thread([]() {
-            while (true)
-            {
-                mqttClient->publishMessageAsync("Test", txtStateObject(txt));
-                sleep(250ms);
-            }
-        }).detach();
-    }
-
-    /*std::thread run = std::thread([] {
-        while (true)
-        {
-            processOrder();
-        }
-    });
-    run.detach();
-    */
 
     std::thread monitor = std::thread([] {
         while (true)
@@ -138,6 +111,8 @@ int main()
     while (true)
     {
         processOrder();
+        //ToDo: remove sleep()
+        //sleep(500ms);
     }
 
     delete mqttClient;
@@ -145,7 +120,9 @@ int main()
 }
 
 void processOrder(){
-    //mqttClient->publishMessageAsync("Test", orderFlag ? "true" : "false");
+    //std::string message = order + " _ " + std::to_string(colorId) + " _ " + mqttstring;
+    //std::string message = orderFlag ? "true" : "false";
+    //mqttClient->publishMessageAsync("Test", message);
     if (orderFlag)
     {
         if (warehouse.storage.getQuantityOf(orderColor) == 0)
@@ -254,6 +231,10 @@ void driveToProcessing()
     robot.yaxis.moveAbsolut(0);
     robot.drive(WAREHOUSE_X, WAREHOUSE_Y, WAREHOUSE_Z);
     robot.suck();
+
+    std::string StatusMessage = "{\"Text\":\"" + MESSAGE_CRANE + "\"}";
+    mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
     robot.yaxis.moveAbsolut(0);    
     std::thread beltState = driveBeltToAsync(BeltState::WAREHOUSE);
     robot.zaxis.moveAbsolut(0);
@@ -317,11 +298,14 @@ void getWorkpieceHighBay(uint8_t x, uint8_t y)
 
 void getFullBox()
 {
+    std::string StatusMessage = "{\"Text\":\"" + MESSAGE_GETWORKPIECE + "\"}";
+    mqttClient->publishMessageAsync(user_topic, StatusMessage, 2);
+
     int x = 0;
     int y = 0;
     for (int i = 0; i < STORAGE_SIZE; i++)
     {
-        if ((int)orderColor == (int)warehouse.storage.getWorkpieceAt(i))
+        if (((int)orderColor + 1) == (int)warehouse.storage.getWorkpieceAt(i))
         {
             x = i % 3;
             y = i / 3;

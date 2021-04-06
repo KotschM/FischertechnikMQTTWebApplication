@@ -56,6 +56,7 @@ def status(request, customer_timestamp):
 
 def sendStorageToFactory(request):
     mqttc.publish(MQTT_Topic_Storage_Web, request.body, 2)
+    print("Sendet" + str(request.body))
     return JsonResponse('Storage was updated', safe=False)
 
 

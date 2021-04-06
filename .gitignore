@@ -38,5 +38,4 @@ obj/
 -p/
 .vscode/settings.json
 deps/
-__pycache__/
 *.pyc

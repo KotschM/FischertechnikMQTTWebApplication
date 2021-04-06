@@ -26,7 +26,7 @@ def on_publish(client, userdata, result):
     print("order published")
 
 
-mqttcOrder = mqtt.Client()
+mqttcOrder = mqtt.Client("Order")
 
 mqttcOrder.on_message = on_message
 mqttcOrder.on_connect = on_connect
