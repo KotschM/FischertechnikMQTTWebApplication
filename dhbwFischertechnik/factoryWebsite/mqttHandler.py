@@ -88,10 +88,13 @@ def Order_Ready_Data_Handler(data):
     json_Dict = json.loads(data)
     last_id = json_Dict['LastId']
 
-    recentOrder = Order.objects.get(transaction_id=last_id)
-    # recentOrder.finished = True
-    # recentOrder.save()
-    recentOrder.delete()
+    try:
+        recentOrder = Order.objects.get(transaction_id=last_id)
+        # recentOrder.finished = True
+        # recentOrder.save()
+        recentOrder.delete()
+    except Order.DoesNotExist:
+        pass
 
     sendNewOrderToFactory(True)
 
