@@ -37,5 +37,4 @@
 obj/
 -p/
 .vscode/settings.json
-deps/
 *.pyc
