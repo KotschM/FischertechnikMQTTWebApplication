@@ -49,9 +49,8 @@ def setting(request):
 
 
 def status(request, customer_timestamp):
-    return render(request, 'factoryWebsite/status.html', {
-        'customer_timestamp': customer_timestamp
-    })
+    context = {'customer_timestamp': customer_timestamp}
+    return render(request, 'factoryWebsite/status.html', context)
 
 
 def sendStorageToFactory(request):
