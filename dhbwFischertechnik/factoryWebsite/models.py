@@ -48,38 +48,3 @@ class Order(models.Model):
         orderitems = self.orderitem_set.all()
         total = sum([item.quantity for item in orderitems])
         return total
-
-
-class OrderItem(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, null=True)
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True)
-    quantity = models.IntegerField(default=0, null=True, blank=True)
-
-    @property
-    def get_total(self):
-        total = self.product.price * self.quantity
-        return total
-
-
-# class Storage(models.Model):
-#     class BoxColors(models.TextChoices):
-#         WHITE = 'W'
-#         RED = 'R'
-#         BLUE = 'B'
-#
-#     class BoxStatus(models.TextChoices):
-#         EMPTY = 'E'
-#         EMPTYBOX = 'EB'
-#         FULL = 'F'
-
-#     x = models.SmallIntegerField()
-#     y = models.SmallIntegerField()
-#     color = models.CharField(
-#         max_length=1,
-#         choices=BoxColors.choices,
-#     )
-#     status = models.CharField(
-#         max_length=2,
-#         choices=BoxStatus.choices,
-#         default=BoxStatus.FULL,
-#     )

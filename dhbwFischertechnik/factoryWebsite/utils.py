@@ -37,7 +37,6 @@ def cookieCart(request):
                     'imageUrl': product.imageUrl
                 },
                 'quantity': cart[i]['quantity'],
-                'get_total': total,
             }
             items.append(item)
         except:
@@ -57,9 +56,6 @@ def guestOrder(request, data):
     name = data['form']['name']
     timestamp = data['form']['timestamp']
 
-    cookieData = cookieCart(request)
-    items = cookieData['items']
-
     customer, created = Customer.objects.get_or_create(
         timestamp=timestamp,
         # name=name,
@@ -74,13 +70,6 @@ def guestOrder(request, data):
         sendToFactory=False
     )
 
-    for item in items:
-        product = Product.objects.get(id=item['product']['id'])
-        OrderItem.objects.create(
-            product=product,
-            order=order,
-            quantity=item['quantity']
-        )
     return customer, order
 
 

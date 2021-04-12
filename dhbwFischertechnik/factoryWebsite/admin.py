@@ -15,8 +15,3 @@ class ProductAdmin(admin.ModelAdmin):
 @admin.register(Order)
 class OrderAdmin(admin.ModelAdmin):
     list_display = ("customer", "sendToFactory", "finished", "color", "transaction_id")
-
-
-@admin.register(OrderItem)
-class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ("product", "order", "quantity")

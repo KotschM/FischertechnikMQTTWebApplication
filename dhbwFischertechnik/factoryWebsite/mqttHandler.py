@@ -90,9 +90,9 @@ def Order_Ready_Data_Handler(data):
 
     try:
         recentOrder = Order.objects.get(transaction_id=last_id)
-        # recentOrder.finished = True
-        # recentOrder.save()
-        recentOrder.delete()
+        recentOrder.finished = True
+        recentOrder.save()
+        # recentOrder.delete()
     except Order.DoesNotExist:
         pass
 

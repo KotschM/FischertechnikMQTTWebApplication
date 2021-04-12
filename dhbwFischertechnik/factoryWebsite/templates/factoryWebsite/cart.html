@@ -37,7 +37,7 @@
                     <div style="flex: 2">{{ item.product.name }}</div>
                     <div style="flex: 1">{{ item.product.price|floatformat:2 }} €</div>
                     <div style="flex: 1"><p class="quantity">{{ item.quantity }}<p></div>
-                    <div style="flex: 1">{{ item.get_total|floatformat:2 }} €</div>
+                    <div style="flex: 1">{{ item.product.price|floatformat:2 }} €</div>
                     <div style="flex: 1">
                         <img data-product="{{ item.product.id }}" data-action="remove" class="chg-quantity
                                 update-cart" src="{% static 'images/trash.png' %}" alt="arrow_down_image">
