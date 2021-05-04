@@ -31,8 +31,8 @@
                 <div style="flex: 2"><p>x{{ item.quantity}}</p></div>
             </div>
             {% endfor %}
-            <h5>Items: {{ order.get_cart_items }}</h5>
-            <h5>Total: {{ order.get_cart_total|floatformat:2 }} €</h5>
+            <h5>Anzahl: {{ order.get_cart_items }}</h5>
+            <h5>Gesamtsumme: {{ order.get_cart_total|floatformat:2 }} €</h5>
         </div>
     </div>
 </div>

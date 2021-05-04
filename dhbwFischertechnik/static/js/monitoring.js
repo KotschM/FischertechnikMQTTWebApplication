@@ -6,7 +6,20 @@ const chatSocket = new WebSocket(
     + '/ws/monitoring/'
 );
 
+let idleTimer = setInterval(setLoadingAnimation, 5000);
+
+function setLoadingAnimation(){
+    document.querySelector('#color-sensor').innerHTML = '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+    document.querySelector('#temperature-sorting-sensor').innerHTML = '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+    document.querySelector('#voltage-sorting-sensor').innerHTML = '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+    document.querySelector('#temperature-main-sensor').innerHTML = '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+    document.querySelector('#voltage-main-sensor').innerHTML = '<div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>';
+}
+
 chatSocket.onmessage = function(e) {
+    clearInterval(idleTimer);
+    idleTimer = setInterval(setLoadingAnimation, 2000);
+
     const data = JSON.parse(e.data);
     const colorValue = parseInt(data.colorSortingLine);
     var colorString;

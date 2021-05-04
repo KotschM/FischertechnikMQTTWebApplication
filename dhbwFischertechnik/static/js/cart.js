@@ -15,7 +15,8 @@ function addCookieItem(productId, action){
     if (action === 'add'){
         if (cart[productId] == undefined){
             if (cart['count'] > 0){
-                alert("Es darf sich nur ein Stein im Warenkorb befinden! \nBitte gehen Sie in den Warenkorb um einen Stein zu" +
+                alert("Es darf sich nur ein Stein im Warenkorb befinden! \nBitte gehen Sie in den Warenkorb, um" +
+                    " einen Stein zu" +
                     " entfernen.")
             }else {
                 console.log('User is not authenticated...')
