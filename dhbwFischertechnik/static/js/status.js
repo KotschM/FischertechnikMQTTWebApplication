@@ -12,7 +12,13 @@ const chatSocket = new WebSocket(
 
 chatSocket.onmessage = function(e) {
     const data = JSON.parse(e.data);
-    document.querySelector('#chat-log').value += (data.message + '\n');
+    var table = document.getElementById("statusTable");
+    var row = table.insertRow(-1);
+    var cell1 = row.insertCell(0);
+    var cell2 = row.insertCell(1);
+    cell1.innerHTML = data.message;
+    var date = new Date();
+    cell2.innerHTML = date.getHours() + ":" + date.getMinutes() + ":" + date.getSeconds() + " Uhr";
 };
 
 chatSocket.onclose = function(e) {

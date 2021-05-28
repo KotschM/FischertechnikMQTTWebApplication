@@ -1,9 +1,21 @@
 {% extends 'factoryWebsite/main.html' %}
 {% load static %}
 {% block content %}
-<h1>Status der Bestellung</h1>
-    <label for="chat-log"></label><textarea id="chat-log" cols="100" rows="20"></textarea><br>
 {{ customer_timestamp|json_script:"customer_timestamp" }}
+
+    <div class="p-4">
+    <h3>Status der Bestellung</h3>
+    <table id="statusTable" class="table table-bordered track_tbl">
+        <thead>
+            <tr>
+                <th>Status</th>
+                <th>Datum/Zeit</th>
+            </tr>
+        </thead>
+        <tbody>
+        </tbody>
+    </table>
+    </div>
 
 <script type="text/javascript" src="{% static 'js/status.js' %}"></script>
 
