@@ -5,7 +5,7 @@
 #include <fstream>
 #include <string>
 
-std::string ip_adress = "192.168.178.100";
+std::string ip_adress = "192.168.0.100";
 int red_lower = 1000;
 int blue_lower = 1600;
 
